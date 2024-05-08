@@ -67,6 +67,9 @@ class Product(models.Model):
     updated_at = models.DateField(
         **NULLABLE, verbose_name="Дата изменения", help_text="Укажите дату изменения"
     )
+    manufactured_at = models.DateField(
+        **NULLABLE, verbose_name="Дата производства", help_text="Укажите дату производства"
+    )
 
 
     class Meta:
