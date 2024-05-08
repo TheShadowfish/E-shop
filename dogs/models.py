@@ -2,6 +2,7 @@ from django.db import models
 
 NULLABLE = {"blank": True, "null": True}
 
+
 class Breed(models.Model):
     name = models.CharField(
         max_length=100,
@@ -18,6 +19,7 @@ class Breed(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Dog(models.Model):
     name = models.CharField(
@@ -48,6 +50,3 @@ class Dog(models.Model):
 
     def __str__(self):
         return self.name
-
-
-
