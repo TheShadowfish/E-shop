@@ -46,14 +46,66 @@
                     <button type="button" class="btn btn-lg btn-block btn-outline-primary">Купить</button>
                 </div>
             </div>
+
         </div>
+
+        <div class="col-6">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">Удобный сервис рассылок</h4>
+                </div>
+                <div class="card-body">
+                    <h1 class="card-title pricing-card-title">$ 140</h1>
+                    <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                        <li>- Неограниченная лицензия</li>
+                        <li>- Поддержка</li>
+                        <li>- Установка на сервер</li>
+                        <li>- Получение обновлений</li>
+                    </ul>
+                    <button type="button" class="btn btn-lg btn-block btn-outline-primary">Купить</button>
+                </div>
+            </div>
+
+        </div>
+
     </div>
+
+    <div class="row text-right">
+        {% for object in object_list %}
+
+        <div class="col-4">
+
+            <div class="card mb-3 box-shadow">
+                <img src="media/product/photo/{{object.image}}" class="card-img-top" alt={{object.image}}>
+
+
+                <div class="card-body">
+                    <h5 class="card-title">{{object | title}}</h5>
+                    <p class="card-text">
+                        {% if object.id == 1 %}
+                        Первый сорт!!! {{object.description}}
+                        {% else %}
+                        <span class="text-muted">{{object.description}}</span>
+
+                        {% endif %}
+                    </p>
+                    <a href="media/product/photo/{{object.image}}" class="btn btn-primary">Перейти куда-нибудь</a>
+                </div>
+            </div>
+
+
+        </div>
+        {% endfor %}
+
+
+    </div>
+
 
     <footer class="pt-4 my-md-5 pt-md-5 border-top">
         <div class="row">
             <div class="col-12 col-md">
                 SkyStore
-                <small class="d-block mb-3 text-muted">&copy; 2023</small>
+                <small class="d-block mb-3 text-muted">&copy; 2023 - {% now 'Y' %}</small>
             </div>
             <div class="col-6 col-md">
                 <h5>Категории</h5>
@@ -81,6 +133,7 @@
     </footer>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
 </body>
 </html>

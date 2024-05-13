@@ -1,10 +1,20 @@
 from django.shortcuts import render
 from datetime import datetime
 import os
-
+from catalog.models import Category, Product
 
 def home(request):
-    return render(request, 'catalog/home.html')
+    products_list = Product.objects.all()
+    categoryies_list = Category.objects.all()
+    # Product.objects.all().delete()
+    # Category.objects.all().delete()
+    #
+    #
+    context = {
+        'object_list': products_list
+    }
+
+    return render(request, 'catalog/home.html', context)
 
 
 def contacts(request):
