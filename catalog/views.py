@@ -20,7 +20,10 @@ def home(request):
 
 def contacts(request):
     number = len(Contact.objects.all())
-    contacts_list = Contact.objects.all()[number-5: number+1]
+    if number > 5:
+        contacts_list = Contact.objects.all()[number-5: number+1]
+    else:
+        contacts_list = Contact.objects.all()
 
     context = {
         'object_list': contacts_list,
