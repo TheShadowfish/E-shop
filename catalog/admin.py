@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from django.contrib import admin
-from catalog.models import Category, Product
+from catalog.models import Category, Product,Contact
 
 """
 Для категорий выведите **id** и **наименование** в список отображения, 
@@ -23,3 +23,7 @@ class ProductAdmin(admin.ModelAdmin):
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ("id", "name")
+
+@admin.register(Contact)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ("id", "name", "phone", "message", "time")

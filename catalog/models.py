@@ -75,3 +75,45 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+
+
+
+class Contact(models.Model):
+    """
+    info = {'time': (datetime.now()).strftime('%Y-%m-%dT%H:%M:%S.%f'),
+            'name': name, 'phone': phone, 'message': message
+            }
+            """
+    """
+    Contact
+    - Имя name
+    - Телефон phone
+    - Сообщение message
+    - Время отправки time
+    """
+    name = models.CharField(
+        max_length=50,
+        verbose_name="Имя контакта",
+        help_text="Введите имя контакта",
+    )
+    phone = models.CharField(
+        max_length=20,
+        verbose_name="Телефон контакта",
+        help_text="Введите телефон контакта",
+    )
+    message = models.TextField(
+        verbose_name="Сообщение",
+        help_text="Введите сообщение котакта", **NULLABLE
+    )
+    time = models.DateTimeField(
+        **NULLABLE, verbose_name="Дата создания", help_text="Укажите дату создания"
+    )
+
+    class Meta:
+        verbose_name = "Контакт"
+        verbose_name_plural = "Контакты"
+
+    def __str__(self):
+        return f"{self.name} - {self.phone}"
+
