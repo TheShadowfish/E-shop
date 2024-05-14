@@ -41,6 +41,7 @@ class Command(BaseCommand):
                     pk=item["pk"],
                     name=item["fields"]["name"],
                     image=item["fields"]["image"],
+                    description=item["fields"]["description"],
                     category=Category.objects.get(id=item["fields"]["category"]),
                     price=item["fields"]["price"],
                     created_at=item["fields"]["created_at"],
