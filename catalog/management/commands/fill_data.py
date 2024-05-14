@@ -40,6 +40,7 @@ class Command(BaseCommand):
                 Product(
                     pk=item["pk"],
                     name=item["fields"]["name"],
+                    description=item["fields"]["description"],
                     image=item["fields"]["image"],
                     category=Category.objects.get(id=item["fields"]["category"]),
                     price=item["fields"]["price"],
