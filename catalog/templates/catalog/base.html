@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load my_tags %}
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -16,6 +17,8 @@
     <h1 class="display-4">Skystore</h1>
     <p class="lead">Skystore - это отличный вариант хранения ваших плагинов и примеров кода, который вы бы хотели
         продать</p>
+    <p class="lead">Email: {% generate_fake_mail 12 %}</p>
+
 </div>
 
 <div class="container">

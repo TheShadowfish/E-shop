@@ -71,12 +71,14 @@
                 </tr>
                 </thead>
                 <tbody>
+
+                {% load my_tags %}
                 {% for object in object_list %}
 
                 <tr>
-                    <td>{{object.name}}</td>
+                    <td>{{object.name | initial_letter_filter}}</td>
                     <td>{{object.phone}}</td>
-                    <td>{{object.message}}</td>
+                    <td>{{object.message | initial_letter_filter}}</td>
                     <td>{{object.time}}</td>
                 </tr>
                 {% endfor %}

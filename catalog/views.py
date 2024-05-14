@@ -30,7 +30,6 @@ def contacts(request):
         'title': 'Контакты'
     }
 
-
     if request.method == 'POST':
         name = request.POST.get('name')
         phone = request.POST.get('phone')
