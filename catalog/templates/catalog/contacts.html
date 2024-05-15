@@ -43,7 +43,7 @@
                     <div class="mb-3">
                         <label for="message">Сообщение</label>
                         <textarea type="text" name="message" class="form-control" id="message"
-                                  placeholder="Контактный телефон" required></textarea>
+                                  placeholder="С00бщение" required></textarea>
                     </div>
                     <button type="submit" class="btn btn-lg btn-block btn-outline-primary">Отправить</button>
                 </form>
@@ -71,12 +71,14 @@
                 </tr>
                 </thead>
                 <tbody>
+
+                {% load my_tags %}
                 {% for object in object_list %}
 
                 <tr>
-                    <td>{{object.name}}</td>
+                    <td>{{object.name | initial_letter_filter}}</td>
                     <td>{{object.phone}}</td>
-                    <td>{{object.message}}</td>
+                    <td>{{object.message | initial_letter_filter}}</td>
                     <td>{{object.time}}</td>
                 </tr>
                 {% endfor %}

@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from datetime import datetime
 import os
 from catalog.models import Category, Product, Contact
+
 
 def home(request):
     products_list = Product.objects.all()
@@ -18,15 +19,26 @@ def home(request):
     return render(request, 'catalog/home.html', context)
 
 
+def product_detail(request, pk):
+    _object = get_object_or_404(Product, pk=pk)
+    context = {
+        "object": _object,
+    }
+
+    return render(request, 'catalog/product_detail.html', context)
+
+
 def contacts(request):
     number = len(Contact.objects.all())
-    contacts_list = Contact.objects.all()[number-5: number+1]
+    if number > 5:
+        contacts_list = Contact.objects.all()[number - 5: number + 1]
+    else:
+        contacts_list = Contact.objects.all()
 
     context = {
         'object_list': contacts_list,
         'title': 'Контакты'
     }
-
 
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -42,18 +54,15 @@ def contacts(request):
                 'name': name, 'phone': phone, 'message': message
                 }
 
-            # print(item)
+        # print(item)
 
         # Contact.objects.append(Contact(**info))
         # students_for_create.append(Student(**student_item))
-
-
 
         # logger(info)
         Contact.objects.create(**info)
 
     return render(request, 'catalog/contacts.html', context)
-
 
 # class Logger:
 #     def __init__(self, filepath):
@@ -69,5 +78,3 @@ def contacts(request):
 #                 write_file.write('\n')
 #         except OSError as e:
 #             print(f"Something went wrong. I can't write \"{self.filepath}\", {str(e)}")
-
-
