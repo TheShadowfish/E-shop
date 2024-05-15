@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Skystore</title>
+    <title>Fishstore</title>
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
 
 </head>
@@ -14,56 +14,50 @@
 
 
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-    <h1 class="display-4">Skystore</h1>
-    <p class="lead">Skystore - это отличный вариант хранения ваших плагинов и примеров кода, который вы бы хотели
-        продать</p>
-    <p class="lead">Email: {% generate_fake_mail 12 %}</p>
+    <h1 class="display-4">Fishstore</h1>
+    <p class="lead">Fishstore - это интернет-магазин всяких разных устройств и других интересных товаров. У нас лучшая электроника и устройства во всех интернетах!
+        <br>
+                <small class="text-body-secondary">
+                     <span class="text-muted">
+
+                    * Fishstore. We do serious business.
+                     </span>
+
+
+
+
+                </small>
+    </p>
+    <p class="lead">
+        <div style="color: red">{% time_until_11_nov %}</div>
+
+    </p>
 
 </div>
 
 <div class="container">
 
-<div class="row text-center">
-    <div class="col-3">
-        <div class="card mb-4 box-shadow">
-            <div class="card-header">
-                <h4 class="my-0 font-weight-normal">Удобный сервис рассылок</h4>
-            </div>
-            <div class="card-body">
-                <h1 class="card-title pricing-card-title">$ 140</h1>
-                <ul class="list-unstyled mt-3 mb-4 text-start m-3">
-                    <li>- Неограниченная лицензия</li>
-                    <li>- Поддержка</li>
-                    <li>- Установка на сервер</li>
-                    <li>- Получение обновлений</li>
-                </ul>
-                <button type="button" class="btn btn-lg btn-block btn-outline-primary">Купить</button>
-            </div>
-        </div>
-
-    </div>
-
-    <div class="col-6">
-        <div class="card mb-4 box-shadow">
-            <div class="card-header">
-                <h4 class="my-0 font-weight-normal">Удобный сервис рассылок</h4>
-            </div>
-            <div class="card-body">
-                <h1 class="card-title pricing-card-title">$ 140</h1>
-                <ul class="list-unstyled mt-3 mb-4 text-start m-3">
-                    <li>- Неограниченная лицензия</li>
-                    <li>- Поддержка</li>
-                    <li>- Установка на сервер</li>
-                    <li>- Получение обновлений</li>
-                </ul>
-                <button type="button" class="btn btn-lg btn-block btn-outline-primary">Купить</button>
+    {% comment "Этот HTML код пока не нужен, но вдруг пригодится в следующем домашнем задании" %}
+    <div class="row text-center">
+        <div class="col-3">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">Удобный сервис рассылок</h4>
+                </div>
+                <div class="card-body">
+                    <h1 class="card-title pricing-card-title">$ 140</h1>
+                    <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                        <li>- Неограниченная лицензия</li>
+                        <li>- Поддержка</li>
+                        <li>- Установка на сервер</li>
+                        <li>- Получение обновлений</li>
+                    </ul>
+                    <button type="button" class="btn btn-lg btn-block btn-outline-primary">Купить</button>
+                </div>
             </div>
         </div>
-
     </div>
-
-</div>
-
+    {% endcomment %}
 
 
     {% block content %}
