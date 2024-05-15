@@ -13,17 +13,10 @@
             {% for dog in dogs %}
             <div class="col">
                 <div class="card shadow-sm">
-                    <img scr="{{ dog.photo | media_filter }}" alt="{{ dog.photo | media_filter }}">
-                    <br>
-                    <img scr="{{ dog.photo | media_filter }}" class="card-img-top" alt="{{dog.photo | media_filter}}">
-                    <img src="media/{{dog.photo}}" class="card-img-top" alt={{dog.photo}}>
-
-                    <li>{{dog.photo | media_filter}}</li>
-                    <li>media/{{dog.photo}}</li>
-
+                    <img src="{{ dog.photo | media_filter }}" alt="{{ dog.photo | media_filter }}">
 
                     <div class="card-body">
-                        <p class="card-text">{{dog}}
+                        <p class="card-text"> <div style="color: orange"><b>{{dog}}</b></div>
                             <br>
                             <b>Кличка:</b> {{dog.name}}
                             <br>
@@ -33,8 +26,7 @@
                         </p>
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                                <a class="btn btn-primary" href="{% url 'dogs:dogs_detail' dog.pk%}" role="button">Посмотреть</a>
                             </div>
                             <small class="text-body-secondary">9 mins</small>
                         </div>
