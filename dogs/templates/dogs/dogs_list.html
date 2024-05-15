@@ -13,7 +13,9 @@
             {% for dog in dogs %}
             <div class="col">
                 <div class="card shadow-sm">
-                    <img scr={{dog.photo | media_filter}} class="card-img-top" alt={{dog.photo | media_filter}}>
+                    <img scr="{{ dog.photo | media_filter }}" alt="{{ dog.photo | media_filter }}">
+                    <br>
+                    <img scr="{{ dog.photo | media_filter }}" class="card-img-top" alt="{{dog.photo | media_filter}}">
                     <img src="media/{{dog.photo}}" class="card-img-top" alt={{dog.photo}}>
 
                     <li>{{dog.photo | media_filter}}</li>
