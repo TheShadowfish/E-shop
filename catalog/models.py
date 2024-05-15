@@ -29,11 +29,11 @@ class Category(models.Model):
 class Product(models.Model):
     """
     Product
-    - Наименование
-    - Описание
-    - Изображение (превью)
-    - Категория
-    - Цена за покупку
+    - Наименование name
+    - Описание description
+    - Изображение (превью) image
+    - Категория category
+    - Цена за покупку price
     - Дата создания (записи в БД) created_at
     - Дата последнего изменения (записи в БД) updated_at
     """
@@ -77,8 +77,6 @@ class Product(models.Model):
         return self.name
 
 
-
-
 class Contact(models.Model):
     """
     info = {'time': (datetime.now()).strftime('%Y-%m-%dT%H:%M:%S.%f'),
@@ -116,4 +114,3 @@ class Contact(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.phone}"
-
