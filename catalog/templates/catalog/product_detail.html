@@ -59,7 +59,13 @@
                 </p>
                 <div class="btn-group">
 
-                    <a class="btn btn-primary" href="{% url 'catalog:home' %}" role="button">Вернуться на главную страницу</a>
+                    {% if per_page %}
+                    <a class="btn btn-primary" href="{% url 'catalog:catalog' per_page page%}" role="button">Вернуться к каталогу</a>
+                    {% else %}
+                    <a class="btn btn-primary" href="{% url 'catalog:home' %}" role="button"> Вернуться на главную
+                        страницу </a>
+                    {% endif %}
+
 
                 </div>
 
