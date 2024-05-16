@@ -79,6 +79,12 @@ def contacts(request):
     return render(request, 'catalog/contacts.html', context)
 
 
+def handle_uploaded_file(f):
+    with open(f"media/product/photo/{f.name}", "wb+") as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
+        return f'product/photo/{f.name}'
+
 def create(request):
     """
        Product
@@ -115,7 +121,11 @@ def create(request):
         description = request.POST.get('description')
         price = request.POST.get('price')
         category = request.POST.get('category')
-        image = request.POST.get('image')
+        # image = 'product/photo/' + str(request.POST.get('image'))
+
+        image = handle_uploaded_file(request.FILES['image'])
+
+
 
         time_of_creation = (datetime.now()).strftime('%Y-%m-%d')
 
@@ -129,6 +139,8 @@ def create(request):
 
         print(info)
         Product.objects.create(**info)
+
+        handle_uploaded_file(request.FILES['image'])
 
         # product_for_create.append(
         #     Product(
