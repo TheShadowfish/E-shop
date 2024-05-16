@@ -18,11 +18,43 @@ def home(request):
 
     return render(request, 'catalog/home.html', context)
 
+def catalog(request, page, per_page):
+    # products_list = Product.objects.all()
+    # product_list = products_list[per_page * (page - 1): per_page * page]
 
-def product_detail(request, pk):
+    len_product = len(Product.objects.all())
+    if len_product % per_page != 0:
+        page_count = [x+1 for x in range((len_product // per_page) + 1)]
+    else:
+        page_count = [x + 1 for x in range((len_product // per_page))]
+
+
+    # page_count = [x+1 for x in range(len(Product.objects.all()) // per_page)]
+
+    product_list = Product.objects.all()[per_page * (page - 1): per_page * page]
+
+
+
+
+    context = {
+        "product_list": product_list,
+        "page": page,
+        "per_page": per_page,
+        "page_count": page_count
+    }
+    print(context)
+
+    return render(request, 'catalog/per_page.html', context)
+
+
+
+def product_detail(request, pk, page=None, per_page=None):
     _object = get_object_or_404(Product, pk=pk)
     context = {
         "object": _object,
+        "pagination": bool(per_page),
+        "per_page": per_page,
+        "page": page
     }
 
     return render(request, 'catalog/product_detail.html', context)
