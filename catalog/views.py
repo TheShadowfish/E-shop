@@ -99,21 +99,50 @@ def create(request):
     else:
         products_list = Product.objects.all()
 
+
+    category_list = Category.objects.all()
+
+
+
     context = {
         'object_list': products_list,
-        'title': 'Контакты'
+        'category_list': category_list,
+        'title': 'Добавить продукт',
     }
 
     if request.method == 'POST':
         name = request.POST.get('name')
         description = request.POST.get('description')
         price = request.POST.get('price')
+        category = request.POST.get('category')
+        image = request.POST.get('image')
+
+        time_of_creation = (datetime.now()).strftime('%Y-%m-%d')
 
 
-        info = {'time': (datetime.now()).strftime('%Y-%m-%dT%H:%M:%S.%f'),
-                'name': name, 'price': price, 'description': description
+
+        info = {'created_at': time_of_creation,
+                'updated_at': time_of_creation,
+                'name': name, 'price': price, 'description': description,
+                'category': Category.objects.get(id=category), 'image': image
                 }
 
         print(info)
+        Product.objects.create(**info)
+
+        # product_for_create.append(
+        #     Product(
+        #         pk=item["pk"],
+        #         name=item["fields"]["name"],
+        #         description=item["fields"]["description"],
+        #         image=item["fields"]["image"],
+        #         category=Category.objects.get(id=item["fields"]["category"]),
+        #         price=item["fields"]["price"],
+        #         created_at=item["fields"]["created_at"],
+        #         updated_at=item["fields"]["updated_at"],
+        #     )
+        # )
+
+        # Product.objects.bulk_create(product_for_create)
 
     return render(request, 'catalog/create_product.html', context)

@@ -25,23 +25,46 @@
                         <textarea type="text" name="description" class="form-control" id="message"
                                   placeholder="Описание продукта" required></textarea>
                     </div>
+
                     <div class="mb-3">
-                        <label for="image">Изображение</label>
-                        <input type="text" name="image" class="form-control" id="image" placeholder="Цена продукта"
-                               required>
+
+
+                        <label for="image">Загрузите изображение продукта</label>
+                        <br>
+
+                        <input type="file" name="image" accept="image/*"
+                               aria-describedby="Загрузите изображение" id="image">
                     </div>
 
 
                     <div class="mb-3">
-                        <label for="category">Категория продукта</label>
-                        <input type="text" name="price" class="form-control" id="category" placeholder="Цена продукта"
-                               required>
+
+                        <label for="id_category">Выберите категорию продукта</label>
+                        <br>
+
+                        <div class="related-widget-wrapper" data-model-ref="Категория">
+                            <select name="category" id="id_category">
+                                <option value="" selected>---------</option>
+
+                                {% for category in category_list %}
+
+                                <option value="{{category.id}}">{{category.name}}</option>
+
+                                {% endfor %}
+
+                            </select>
+
+
+                        </div>
+
+
                     </div>
 
+
                     <div class="mb-3">
-                        <label for="price">Цена</label>
-                        <input type="integer" name="price" class="form-control" id="price" placeholder="Цена продукта"
-                               required>
+                        <label for="price">Введите цену продукта</label>
+                        <br>
+                        <input type="number" name="price" class="vIntegerField" id="price" required>
                     </div>
                     <br>
 
