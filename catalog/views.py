@@ -79,11 +79,18 @@ def contacts(request):
     return render(request, 'catalog/contacts.html', context)
 
 
-def handle_uploaded_file(f):
-    with open(f"media/product/photo/{f.name}", "wb+") as destination:
+def handle_uploaded_file(f, difference_between_files):
+
+    if os.path.exists(os.path.join(f"media/product/photo/{f.name}")):
+        filename = difference_between_files + f.name
+        print(f"file exists! f.name = {f.name}, new={filename}")
+    else:
+        filename  = f.name
+
+    with open(f"media/product/photo/{filename}", "wb+") as destination:
         for chunk in f.chunks():
             destination.write(chunk)
-        return f'product/photo/{f.name}'
+        return f'product/photo/{filename}'
 
 def create(request):
     """
@@ -123,11 +130,19 @@ def create(request):
         category = request.POST.get('category')
         # image = 'product/photo/' + str(request.POST.get('image'))
 
-        image = handle_uploaded_file(request.FILES['image'])
-
-
-
         time_of_creation = (datetime.now()).strftime('%Y-%m-%d')
+
+        try:
+            image = handle_uploaded_file(request.FILES['image'], f"{time_of_creation}_{name}_")
+        except:
+            print("Изображения-то нет...")
+            image = None
+
+
+
+
+
+        # time_of_creation = (datetime.now()).strftime('%Y-%m-%d')
 
 
 
@@ -140,7 +155,7 @@ def create(request):
         print(info)
         Product.objects.create(**info)
 
-        handle_uploaded_file(request.FILES['image'])
+        # handle_uploaded_file(request.FILES['image'], f"{time_of_creation}_{name}_")
 
         # product_for_create.append(
         #     Product(

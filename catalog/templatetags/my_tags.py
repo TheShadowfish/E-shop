@@ -71,4 +71,8 @@ def last_five_contacts(query_set):
 def media_filter(path):
     if path:
         return f'/media/{path}'
-    return '#'
+
+    return '/static/image/no_image.png'
+
+
+
