@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 
 from catalog.models import Category, Product, Contact
 
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 #
 # def home(request):
@@ -40,6 +40,15 @@ class ProductCreateView(CreateView):
     - Дата последнего изменения (записи в БД) updated_at"""
     model = Product
     fields = ("name","description","image","category","price","created_at","updated_at",)
+    success_url = reverse_lazy('catalog:home')
+
+class ProductUpdateView(UpdateView):
+    model = Product
+    fields = ("name", "description", "image", "category", "price", "created_at", "updated_at",)
+    success_url = reverse_lazy('catalog:home')
+
+class ProductDeleteView(DeleteView):
+    model = Product
     success_url = reverse_lazy('catalog:home')
 
 def catalog(request, page, per_page):
