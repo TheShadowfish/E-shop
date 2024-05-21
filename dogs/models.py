@@ -42,6 +42,7 @@ class Dog(models.Model):
     date_born = models.DateField(
         **NULLABLE, verbose_name="Дата рождения", help_text="Укажите дату рождения"
     )
+    count_views = models.PositiveBigIntegerField(verbose_name='Счетчик просмотров', help_text="Укажите количество просмотров", default=0)
 
     class Meta:
         verbose_name = "Собака"

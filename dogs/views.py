@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
-from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.urls import reverse_lazy, reverse
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from dogs.models import Dog
 
 class DogListView(ListView):
@@ -8,6 +8,11 @@ class DogListView(ListView):
 
 class DogDetailView(DetailView):
     model = Dog
+    def qet_object(self, queryset = None):
+        self.object = super().get_object(queryset)
+        self.object.count_views += 1
+        self.object.save()
+        return self.object
 
 class DogCreateView(CreateView):
     model= Dog
@@ -19,6 +24,12 @@ class DogUpdateView(UpdateView):
     fields = ("name", "breed", "photo", "date_born",)
     success_url = reverse_lazy('dogs:dogs_list')
 
+    def get_success_url(self):
+        return reverse('dogs:detail', args=[self.kwargs.get("pk")])
+
+class DogDeleteView(DeleteView):
+    model = Dog
+    success_url = reverse_lazy('dogs:dogs_list')
 
 # def dogs_list(request):
 #
