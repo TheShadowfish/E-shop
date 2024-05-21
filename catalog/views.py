@@ -3,20 +3,29 @@ from datetime import datetime
 import os
 from catalog.models import Category, Product, Contact
 
+from django.views.generic import ListView, DetailView
 
-def home(request):
-    products_list = Product.objects.all()
-    categoryies_list = Category.objects.all()
-    # Product.objects.all().delete()
-    # Category.objects.all().delete()
-    #
-    #
-    context = {
-        'object_list': products_list,
-        'title': 'Каталог'
-    }
+#
+# def home(request):
+#     products_list = Product.objects.all()
+#     categoryies_list = Category.objects.all()
+#     # Product.objects.all().delete()
+#     # Category.objects.all().delete()
+#     #
+#     #
+#     context = {
+#         'object_list': products_list,
+#         'title': 'Каталог'
+#     }
+#
+#     return render(request, 'catalog/home.html', context)
 
-    return render(request, 'catalog/home.html', context)
+class ProductListView(ListView):
+    model = Product
+
+class ProductDetailView(DetailView):
+    model = Product
+
 
 def catalog(request, page, per_page):
 
