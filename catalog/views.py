@@ -1,9 +1,12 @@
 from django.shortcuts import render, get_object_or_404
 from datetime import datetime
 import os
+
+from django.urls import reverse_lazy
+
 from catalog.models import Category, Product, Contact
 
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView
 
 #
 # def home(request):
@@ -26,6 +29,18 @@ class ProductListView(ListView):
 class ProductDetailView(DetailView):
     model = Product
 
+class ProductCreateView(CreateView):
+    """Product
+    - Наименование name
+    - Описание description
+    - Изображение (превью) image
+    - Категория category
+    - Цена за покупку price
+    - Дата создания (записи в БД) created_at
+    - Дата последнего изменения (записи в БД) updated_at"""
+    model = Product
+    fields = ("name","description","image","category","price","created_at","updated_at",)
+    success_url = reverse_lazy('catalog:home')
 
 def catalog(request, page, per_page):
 
