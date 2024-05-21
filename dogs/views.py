@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from dogs.models import Dog
 
 class DogListView(ListView):
@@ -12,7 +12,14 @@ class DogDetailView(DetailView):
 class DogCreateView(CreateView):
     model= Dog
     fields = ("name", "breed", "photo", "date_born", )
-    success_url = reverse_lazy('dogs:dog_list')
+    success_url = reverse_lazy('dogs:dogs_list')
+
+class DogUpdateView(UpdateView):
+    model = Dog
+    fields = ("name", "breed", "photo", "date_born",)
+    success_url = reverse_lazy('dogs:dogs_list')
+
+
 # def dogs_list(request):
 #
 #     dogs = Dog.objects.all()
