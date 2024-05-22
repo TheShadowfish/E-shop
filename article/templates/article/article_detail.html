@@ -1,0 +1,107 @@
+{% extends 'catalog/base.html'%}
+{% load static %}
+{% load my_tags %}
+{% block content %}
+
+<div class="row text-right">
+    <div class="col-6">
+        <div class="card mb-3 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">Изображение товара</h4>
+            </div>
+            <div class="card-body">
+                <img src="{{object.image|media_filter}}" class="card-img-top" alt={{object.image|media_filter}}>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="col-6">
+
+        <div class="card mb-3 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">Описание товара</h4>
+            </div>
+
+
+            <div class="card-body">
+                <h5 class="card-title">
+                    <div style="color: orange"><b>{{object | title}}</b></div>
+                </h5>
+                <p class="card-text">
+                    {% if object.id == 1 %}
+                <div style="color: red">Осталось мало! Спешите!</div>
+                {% else %}
+                <span class="text-muted">*чем раньше купите - тем раньше доставим :) <br></span>
+                {% endif %}
+
+                <br>
+                <b>Наименование: </b>{{object.name}}
+                <br> <br>
+                <b>Описание: </b>{{object.description}}
+                <br> <br>
+                <b>Категория: </b>{{object.category}}
+                <br> <br>
+                <b>Цена: </b>{{object.price}}
+                <br><br>
+                <small class="text-body-secondary">
+
+                    Продажи: {{object.created_at}}
+                    <br>
+                    Последнее изменение: {{object.updated_at}}
+
+
+                </small>
+
+
+                </p>
+                <div class="btn-group">
+
+                    {% if per_page %}
+                    <a class="btn btn-primary" href="{% url 'catalog:catalog' per_page page%}" role="button">Вернуться к
+                        каталогу</a>
+                    {% else %}
+                    <a class="btn btn-primary" href="{% url 'catalog:home' %}" role="button"> Вернуться на главную
+                        страницу </a>
+                    {% endif %}
+
+
+
+                    {% if object.has_other_pages %}
+                    <ul class="pagination">
+                        {% if objects.has_previous %}
+                        <li><a href="?page={{ users.previous_page_number }}">&laquo;</a></li>
+                        {% else %}
+                        <li class="disabled"><span>&laquo;</span></li>
+                        {% endif %}
+                        {% for i in users.paginator.page_range %}
+                        {% if users.number == i %}
+                        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                        {% else %}
+                        <li><a href="?page={{ i }}">{{ i }}</a></li>
+                        {% endif %}
+                        {% endfor %}
+                        {% if users.has_next %}
+                        <li><a href="?page={{ users.next_page_number }}">&raquo;</a></li>
+                        {% else %}
+                        <li class="disabled"><span>&raquo;</span></li>
+                        {% endif %}
+                    </ul>
+                    {% endif %}
+
+
+                </div>
+
+
+            </div>
+        </div>
+
+
+    </div>
+
+
+</div>
+
+{% endblock %}
