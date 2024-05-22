@@ -1,5 +1,6 @@
 from django.db import models
-
+from datetime import datetime
+from django.utils import timezone
 NULLABLE = {"blank": True, "null": True}
 
 
@@ -62,10 +63,10 @@ class Product(models.Model):
     price = models.IntegerField(verbose_name="Цена", help_text="Введите цену продукта")
 
     created_at = models.DateField(
-        **NULLABLE, verbose_name="Дата создания", help_text="Укажите дату создания"
+        **NULLABLE, verbose_name="Дата создания", help_text="Укажите дату создания", default=timezone.now()
     )
     updated_at = models.DateField(
-        **NULLABLE, verbose_name="Дата изменения", help_text="Укажите дату изменения"
+        **NULLABLE, verbose_name="Дата изменения", help_text="Укажите дату изменения", default=timezone.now()
     )
 
     class Meta:
@@ -102,10 +103,10 @@ class Contact(models.Model):
     )
     message = models.TextField(
         verbose_name="Сообщение",
-        help_text="Введите сообщение котакта", **NULLABLE
+        help_text="Введите сообщение контакта", **NULLABLE
     )
     time = models.DateTimeField(
-        **NULLABLE, verbose_name="Дата создания", help_text="Укажите дату создания"
+        **NULLABLE, verbose_name="Дата создания", help_text="Укажите дату создания", default=timezone.now()
     )
 
     class Meta:

@@ -1,6 +1,6 @@
 {% extends 'catalog/base.html'%}
 {% block content %}
-
+{% load my_tags %}
 
 <div class="row text-start">
     <div class="col-lg-9 col-md-6 col-sm-12">
@@ -31,6 +31,7 @@
             <div class="card-body">
                 <form method="post" action="" class="form-floating">
                     {% csrf_token %}
+
                     <div class="mb-3">
                         <label for="name">Имя</label>
                         <input type="text" name="name" class="form-control" id="name" placeholder="Ваше имя" required>
@@ -44,7 +45,10 @@
                         <label for="message">Сообщение</label>
                         <textarea type="text" name="message" class="form-control" id="message"
                                   placeholder="С00бщение" required></textarea>
+
                     </div>
+
+
                     <button type="submit" class="btn btn-lg btn-block btn-outline-primary">Отправить</button>
                 </form>
             </div>
@@ -73,7 +77,14 @@
                 <tbody>
 
                 {% load my_tags %}
-                {% for object in object_list %}
+
+                {% if latest_contacts %}
+                <p>КОНТЕКСТ ЕСТЬ</p>
+                {% else %}
+                <p>КОНТЕКСТА НЕТ</p>
+                {% endif %}
+
+                {% for object in latest_contacts %}
 
                 <tr>
                     <td>{{object.name | initial_letter_filter}}</td>
