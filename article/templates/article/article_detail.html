@@ -1,4 +1,4 @@
-{% extends 'catalog/base.html'%}
+{% extends 'article/base.html'%}
 {% load static %}
 {% load my_tags %}
 {% block content %}
@@ -28,7 +28,7 @@
 
             <div class="card-body">
                 <h5 class="card-title">
-                    <div style="color: orange"><b>{{object | title}}</b></div>
+                    <div style="color: orange"><b>{{object.name}}</b></div>
                 </h5>
                 <p class="card-text">
                     {% if object.id == 1 %}
@@ -40,17 +40,17 @@
                 <br>
                 <b>Наименование: </b>{{object.name}}
                 <br> <br>
-                <b>Описание: </b>{{object.description}}
+                <b>Описание: </b>{{object.body}}
                 <br> <br>
-                <b>Категория: </b>{{object.category}}
+                <b>Создано: </b>{{object.created_at}}
                 <br> <br>
-                <b>Цена: </b>{{object.price}}
+                <b>Опубликовано: </b>{{object.is_published}}
                 <br><br>
                 <small class="text-body-secondary">
 
-                    Продажи: {{object.created_at}}
+                    Просмотры: {{object.views_count}}
                     <br>
-                    Последнее изменение: {{object.updated_at}}
+                    Путь: {{object.slug}}
 
 
                 </small>
@@ -60,11 +60,11 @@
                 <div class="btn-group">
 
                     {% if per_page %}
-                    <a class="btn btn-primary" href="{% url 'catalog:catalog' per_page page%}" role="button">Вернуться к
-                        каталогу</a>
+                    <a class="btn btn-primary" href="{% url 'catalog:home' %}" role="button">Вернуться к
+                        каталогу товаров</a>
                     {% else %}
-                    <a class="btn btn-primary" href="{% url 'catalog:home' %}" role="button"> Вернуться на главную
-                        страницу </a>
+                    <a class="btn btn-primary" href="{% url 'article:blog' %}" role="button"> Вернуться на главную
+                        страницу блога</a>
                     {% endif %}
 
 

@@ -10,7 +10,7 @@
 
 </head>
 <body>
-{% include 'catalog/includes/inc_main_menu.html' %}
+{% include 'article/includes/inc_main_menu.html' %}
 
 
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
@@ -23,8 +23,12 @@
         <br>
         Fishstore
     </h1>
-    <p class="lead">Fishstore - это интернет-магазин всяких разных устройств и других интересных товаров. У нас лучшая
+    <p class="lead">Fishstore - это интернет-магазин всяких разных устройств и других интересных товаров.
+        Это наш официальный блог со статьями, текстами и новостями. У нас лучшая
         электроника и устройства во всех интернетах!
+        <br>
+        PS: А еще у нас <s>тамада</s> <u>админ</u> хороший и конкурсы интересные!
+
         <br>
 
         <small class="text-body-secondary">
@@ -75,11 +79,12 @@
 
     <footer class="pt-4 my-md-5 pt-md-5 border-top">
         <div class="row">
-            <div class="col-12 col-md">
+            <div class="col-10 col-md">
                 SkyStore
                 <small class="d-block mb-3 text-muted">&copy; 2023 - {% now 'Y' %}</small>
             </div>
-            <div class="col-4 col-md">
+            <div class="row">
+            <div class="col-4 col-md-5">
                 <h5>Категории</h5>
                 <ul class="list-unstyled text-small">
                     <li><a class="text-muted" href="#">Рассылки</a></li>

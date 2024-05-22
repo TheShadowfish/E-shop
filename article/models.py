@@ -17,7 +17,7 @@ class Article(models.Model):
     name = models.CharField(
         max_length=100, verbose_name="Заголовок", help_text="Введите заголовок статьи"
     )
-    slug = models.CharField(max_lenght=150, verbose_name='slug',help_text="")
+    slug = models.CharField(max_length=150, verbose_name='slug', help_text="slug")
 
     body = models.TextField(
         verbose_name="Содержимое статьи", help_text="Введите содержимое статьи"
