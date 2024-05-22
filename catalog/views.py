@@ -25,6 +25,25 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 
 class ProductListView(ListView):
     model = Product
+    # paginate_by = 3
+    queryset = model.objects.all()  # Default: Model.objects.all()
+
+
+class ProductPaginate2ListView(ListView):
+    model = Product
+        # model = User
+        # template_name = 'core/user_list.html'  # Default: <app_label>/<model_name>_list.html
+        # context_object_name = 'users'  # Default: object_list
+    paginate_by = 2
+    queryset = model.objects.all()  # Default: Model.objects.all()
+
+class ProductPaginate3ListView(ListView):
+    model = Product
+        # model = User
+        # template_name = 'core/user_list.html'  # Default: <app_label>/<model_name>_list.html
+        # context_object_name = 'users'  # Default: object_list
+    paginate_by = 3
+    queryset = model.objects.all()  # Default: Model.objects.all()
 
 class ProductDetailView(DetailView):
     model = Product
