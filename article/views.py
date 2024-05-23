@@ -4,7 +4,8 @@ from django.shortcuts import render, get_object_or_404
 from datetime import datetime
 import os
 
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
+from pytils.translit import slugify
 
 from article.models import Article
 
@@ -15,6 +16,11 @@ class ArticleListView(ListView):
     model = Article
     # paginate_by = 3
     # queryset = model.objects.all()  # Default: Model.objects.all()
+    def get_queryset(self, *args, **kwargs):
+        queryset = super().get_queryset(*args, **kwargs)
+        queryset = queryset.filter(is_published=True)
+        return queryset
+
 
 
 class ArticleDetailView(DetailView):
@@ -29,15 +35,35 @@ class ArticleDetailView(DetailView):
 class ArticleCreateView(CreateView):
 
     model = Article
-    fields = ("name", "slug", "body", "image", "created_at", "is_published", "views_count",)
+    fields = ("name", "body", "image", "created_at", "is_published", "views_count",)
 
     success_url = reverse_lazy('article:blog')
+    def form_valid(self, form):
+        if form.is_valid():
+            new_article = form.save()
+            new_article.slug = slugify(new_article.name)
+            new_article.save()
+        return super().form_valid(form)
+
+
 
 
 class ArticleUpdateView(UpdateView):
     model = Article
-    fields = ("name", "slug", "body", "image", "created_at", "is_published", "views_count",)
-    success_url = reverse_lazy('article:blog')
+    fields = ("name", "body", "image", "created_at", "is_published", "views_count",)
+    # success_url = reverse_lazy('article:blog')
+
+    def form_valid(self, form):
+        if form.is_valid():
+            new_article = form.save()
+            new_article.slug = slugify(new_article.name)
+            new_article.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('article:article_detail', args=[self.kwargs.get('pk')])
+
+
 
 
 class ArticleDeleteView(DeleteView):
