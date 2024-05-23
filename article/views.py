@@ -9,11 +9,19 @@ from pytils.translit import slugify
 
 from article.models import Article
 
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
+from django.views.generic import (
+    ListView,
+    DetailView,
+    CreateView,
+    UpdateView,
+    DeleteView,
+    TemplateView,
+)
 
 
 class ArticleListView(ListView):
     model = Article
+
     # paginate_by = 3
     # queryset = model.objects.all()  # Default: Model.objects.all()
     def get_queryset(self, *args, **kwargs):
@@ -22,9 +30,9 @@ class ArticleListView(ListView):
         return queryset
 
 
-
 class ArticleDetailView(DetailView):
     model = Article
+
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
         self.object.views_count += 1
@@ -35,9 +43,17 @@ class ArticleDetailView(DetailView):
 class ArticleCreateView(CreateView):
 
     model = Article
-    fields = ("name", "body", "image", "created_at", "is_published", "views_count",)
+    fields = (
+        "name",
+        "body",
+        "image",
+        "created_at",
+        "is_published",
+        "views_count",
+    )
 
-    success_url = reverse_lazy('article:blog')
+    success_url = reverse_lazy("article:blog")
+
     def form_valid(self, form):
         if form.is_valid():
             new_article = form.save()
@@ -46,11 +62,16 @@ class ArticleCreateView(CreateView):
         return super().form_valid(form)
 
 
-
-
 class ArticleUpdateView(UpdateView):
     model = Article
-    fields = ("name", "body", "image", "created_at", "is_published", "views_count",)
+    fields = (
+        "name",
+        "body",
+        "image",
+        "created_at",
+        "is_published",
+        "views_count",
+    )
     # success_url = reverse_lazy('article:blog')
 
     def form_valid(self, form):
@@ -61,14 +82,13 @@ class ArticleUpdateView(UpdateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('article:article_detail', args=[self.kwargs.get('pk')])
-
-
+        return reverse("article:article_detail", args=[self.kwargs.get("pk")])
 
 
 class ArticleDeleteView(DeleteView):
     model = Article
-    success_url = reverse_lazy('article:blog')
+    success_url = reverse_lazy("article:blog")
+
 
 #
 # class ContactsPageViews(CreateView):

@@ -1,6 +1,7 @@
 from django.db import models
 from datetime import datetime
 from django.utils import timezone
+
 NULLABLE = {"blank": True, "null": True}
 
 
@@ -10,13 +11,16 @@ class Category(models.Model):
     - Наименование
     - Описание
     """
+
     name = models.CharField(
         max_length=100,
         verbose_name="Наименование категории",
         help_text="Введите наименование категории",
     )
     description = models.TextField(
-        verbose_name="Описание категории", help_text="Введите описание категории товаров", **NULLABLE
+        verbose_name="Описание категории",
+        help_text="Введите описание категории товаров",
+        **NULLABLE,
     )
 
     class Meta:
@@ -38,17 +42,22 @@ class Product(models.Model):
     - Дата создания (записи в БД) created_at
     - Дата последнего изменения (записи в БД) updated_at
     """
+
     name = models.CharField(
-        max_length=100, verbose_name="Наименование", help_text="Введите наименование продукта"
+        max_length=100,
+        verbose_name="Наименование",
+        help_text="Введите наименование продукта",
     )
     description = models.TextField(
-        verbose_name="Описание продукта", help_text="Введите описание продукта", **NULLABLE
+        verbose_name="Описание продукта",
+        help_text="Введите описание продукта",
+        **NULLABLE,
     )
     image = models.ImageField(
         upload_to="product/photo",
         verbose_name="Изображение",
         help_text="Загрузите изображение продукта",
-        **NULLABLE
+        **NULLABLE,
     )
 
     category = models.ForeignKey(
@@ -57,16 +66,22 @@ class Product(models.Model):
         verbose_name="Категории",
         help_text="Введите категорию продукта",
         **NULLABLE,
-        related_name="categories"
+        related_name="categories",
     )
 
     price = models.IntegerField(verbose_name="Цена", help_text="Введите цену продукта")
 
     created_at = models.DateField(
-        **NULLABLE, verbose_name="Дата создания", help_text="Укажите дату создания", default=timezone.now()
+        **NULLABLE,
+        verbose_name="Дата создания",
+        help_text="Укажите дату создания",
+        default=timezone.now(),
     )
     updated_at = models.DateField(
-        **NULLABLE, verbose_name="Дата изменения", help_text="Укажите дату изменения", default=timezone.now()
+        **NULLABLE,
+        verbose_name="Дата изменения",
+        help_text="Укажите дату изменения",
+        default=timezone.now(),
     )
 
     class Meta:
@@ -83,7 +98,8 @@ class Contact(models.Model):
     info = {'time': (datetime.now()).strftime('%Y-%m-%dT%H:%M:%S.%f'),
             'name': name, 'phone': phone, 'message': message
             }
-            """
+    """
+
     """
     Contact
     - Имя name
@@ -102,11 +118,13 @@ class Contact(models.Model):
         help_text="Введите телефон контакта",
     )
     message = models.TextField(
-        verbose_name="Сообщение",
-        help_text="Введите сообщение контакта", **NULLABLE
+        verbose_name="Сообщение", help_text="Введите сообщение контакта", **NULLABLE
     )
     time = models.DateTimeField(
-        **NULLABLE, verbose_name="Дата создания", help_text="Укажите дату создания", default=timezone.now()
+        **NULLABLE,
+        verbose_name="Дата создания",
+        help_text="Укажите дату создания",
+        default=timezone.now(),
     )
 
     class Meta:
