@@ -1,3 +1,21 @@
+Для работы проекта необходимо
+
+python = "^3.10"
+django = "^5.0.4"
+psycopg2 = "^2.9.9"
+ipython = "^8.24.0"
+pillow = "^10.3.0"
+pytils = "^0.4.1"
+python-decouple = "^3.8"
+
+python-decouple нужен для хранения личных данных 
+(имя БД Postgress, 
+password,
+email,
+email_password
+)
+
+
 # Задание 1 (вроде как всё относительно прилично работает)
 Переведите имеющиеся контроллеры с FBV на CBV.
 

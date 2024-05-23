@@ -476,6 +476,17 @@ files = [
 windows-terminal = ["colorama (>=0.4.6)"]
 
 [[package]]
+name = "python-decouple"
+version = "3.8"
+description = "Strict separation of settings from code."
+optional = false
+python-versions = "*"
+files = [
+    {file = "python-decouple-3.8.tar.gz", hash = "sha256:ba6e2657d4f376ecc46f77a3a615e058d93ba5e465c01bbe57289bfb7cce680f"},
+    {file = "python_decouple-3.8-py3-none-any.whl", hash = "sha256:d0d45340815b25f4de59c974b855bb38d03151d81b037d9e3f463b0c9f8cbd66"},
+]
+
+[[package]]
 name = "pytils"
 version = "0.4.1"
 description = "Russian-specific string utils"
@@ -592,4 +603,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "372e468cad3dbe62f4fdbe2a1830ba0e26940a8a4b6a0c757e09e16921153662"
+content-hash = "3a6ba7114b6e286194234a62028ed103e6ec7a15c66c618e76143a8e0cc59b42"

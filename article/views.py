@@ -6,6 +6,7 @@ import os
 
 from django.urls import reverse_lazy, reverse
 from pytils.translit import slugify
+from functions.utils import send_email
 
 from article.models import Article
 
@@ -14,8 +15,7 @@ from django.views.generic import (
     DetailView,
     CreateView,
     UpdateView,
-    DeleteView,
-    TemplateView,
+    DeleteView
 )
 
 
@@ -37,6 +37,10 @@ class ArticleDetailView(DetailView):
         self.object = super().get_object(queryset)
         self.object.views_count += 1
         self.object.save()
+
+        if self.object.views_count == 100:
+            send_email(self.object)
+
         return self.object
 
 
