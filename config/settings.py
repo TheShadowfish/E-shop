@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'catalog',
+    'article'
 ]
 
 MIDDLEWARE = [
@@ -79,10 +81,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'hw_20',
-        'USER': 'postgres',
+        'USER': config('DB_POSTRESQL_USER'),
         'HOST': '127.0.0.1',
         'PORT': 5432,
-        'PASSWORD': '12345'
+        'PASSWORD': config('DB_POSTRESQL_PASSWORD')
     }
 }
 

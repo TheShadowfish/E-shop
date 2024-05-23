@@ -3,12 +3,15 @@
     <nav class="ms-5">
         <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:home' %}">Каталог (весь)</a>
 
-        <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:catalog' 2 1 %}">Каталог (по 2 товара)</a>
+        <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:home_paginate_by_2' %}">Каталог (по 2 товара)</a>
 
-        <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:catalog' 3 1 %}">Каталог (по 3 товара)</a>
+        <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:home_paginate_by_3' %}">Каталог (по 3 товара)</a>
 
         <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:create' %}">Создать продукт</a>
 
         <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:contacts' %}">Контакты</a>
+
+        <a class="p-2 btn btn-outline-primary" href="{% url 'article:blog' %}">Перейти к блогу</a>
+
     </nav>
 </div>

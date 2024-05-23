@@ -1,175 +1,128 @@
 from django.shortcuts import render, get_object_or_404
 from datetime import datetime
 import os
+
+from django.urls import reverse_lazy
+
 from catalog.models import Category, Product, Contact
 
-
-def home(request):
-    products_list = Product.objects.all()
-    categoryies_list = Category.objects.all()
-    # Product.objects.all().delete()
-    # Category.objects.all().delete()
-    #
-    #
-    context = {
-        'object_list': products_list,
-        'title': 'Каталог'
-    }
-
-    return render(request, 'catalog/home.html', context)
-
-def catalog(request, page, per_page):
-
-    len_product = len(Product.objects.all())
-    if len_product % per_page != 0:
-        page_count = [x+1 for x in range((len_product // per_page) + 1)]
-    else:
-        page_count = [x + 1 for x in range((len_product // per_page))]
-
-    product_list = Product.objects.all()[per_page * (page - 1): per_page * page]
+from django.views.generic import (
+    ListView,
+    DetailView,
+    CreateView,
+    UpdateView,
+    DeleteView,
+    TemplateView,
+)
 
 
-    context = {
-        "product_list": product_list,
-        "page": page,
-        "per_page": per_page,
-        "page_count": page_count
-    }
+class ProductListView(ListView):
+    model = Product
+    # paginate_by = 3
+    queryset = model.objects.all()  # Default: Model.objects.all()
 
 
-    return render(request, 'catalog/per_page.html', context)
+class ProductPaginate2ListView(ListView):
+    model = Product
+    paginate_by = 2
+    queryset = model.objects.all()  # Default: Model.objects.all()
 
 
-def product_detail(request, pk, page=None, per_page=None):
-    _object = get_object_or_404(Product, pk=pk)
-    context = {
-        "object": _object,
-        "pagination": bool(per_page),
-        "per_page": per_page,
-        "page": page
-    }
+class ProductPaginate3ListView(ListView):
+    model = Product
+    paginate_by = 3
+    queryset = model.objects.all()  # Default: Model.objects.all()
 
-    return render(request, 'catalog/product_detail.html', context)
+
+class ProductDetailView(DetailView):
+    model = Product
+
+
+class ProductCreateView(CreateView):
+    """Product
+    - Наименование name
+    - Описание description
+    - Изображение (превью) image
+    - Категория category
+    - Цена за покупку price
+    - Дата создания (записи в БД) created_at
+    - Дата последнего изменения (записи в БД) updated_at"""
+
+    model = Product
+    fields = (
+        "name",
+        "description",
+        "image",
+        "category",
+        "price",
+        "created_at",
+        "updated_at",
+    )
+    success_url = reverse_lazy("catalog:home")
+
+
+class ProductUpdateView(UpdateView):
+    model = Product
+    fields = (
+        "name",
+        "description",
+        "image",
+        "category",
+        "price",
+        "created_at",
+        "updated_at",
+    )
+    success_url = reverse_lazy("catalog:home")
+
+
+class ProductDeleteView(DeleteView):
+    model = Product
+    success_url = reverse_lazy("catalog:home")
+
+
+class ContactsPageViews(CreateView):
+    model = Contact
+    fields = (
+        "name",
+        "phone",
+        "message",
+    )
+    success_url = reverse_lazy("catalog:contacts")
+    template_name = "catalog/contacts.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        number = len(Contact.objects.all())
+        if number > 5:
+            context["latest_contacts"] = Contact.objects.all()[number - 5 : number + 1]
+        else:
+            context["latest_contacts"] = Contact.objects.all()
+
+        return context
 
 
 def contacts(request):
     number = len(Contact.objects.all())
     if number > 5:
-        contacts_list = Contact.objects.all()[number - 5: number + 1]
+        contacts_list = Contact.objects.all()[number - 5 : number + 1]
     else:
         contacts_list = Contact.objects.all()
 
-    context = {
-        'object_list': contacts_list,
-        'title': 'Контакты'
-    }
+    context = {"object_list": contacts_list, "title": "Контакты"}
 
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        phone = request.POST.get('phone')
-        message = request.POST.get('message')
+    if request.method == "POST":
+        name = request.POST.get("name")
+        phone = request.POST.get("phone")
+        message = request.POST.get("message")
 
-
-        info = {'time': (datetime.now()).strftime('%Y-%m-%dT%H:%M:%S.%f'),
-                'name': name, 'phone': phone, 'message': message
-                }
+        info = {
+            "time": (datetime.now()).strftime("%Y-%m-%dT%H:%M:%S.%f"),
+            "name": name,
+            "phone": phone,
+            "message": message,
+        }
 
         Contact.objects.create(**info)
 
-    return render(request, 'catalog/contacts.html', context)
-
-
-def handle_uploaded_file(f, difference_between_files):
-
-    if os.path.exists(os.path.join(f"media/product/photo/{f.name}")):
-        filename = difference_between_files + f.name
-        print(f"file exists! f.name = {f.name}, new={filename}")
-    else:
-        filename  = f.name
-
-    with open(f"media/product/photo/{filename}", "wb+") as destination:
-        for chunk in f.chunks():
-            destination.write(chunk)
-        return f'product/photo/{filename}'
-
-def create(request):
-    """
-       Product
-       - Наименование name
-       - Описание description
-       - Изображение (превью) image
-       - Категория category
-       - Цена за покупку price
-       - Дата создания (записи в БД) created_at
-       - Дата последнего изменения (записи в БД) updated_at
-       """
-
-
-
-    number = len(Product.objects.all())
-    if number > 5:
-        products_list = Product.objects.all()[number - 5: number + 1]
-    else:
-        products_list = Product.objects.all()
-
-
-    category_list = Category.objects.all()
-
-
-
-    context = {
-        'object_list': products_list,
-        'category_list': category_list,
-        'title': 'Добавить продукт',
-    }
-
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        description = request.POST.get('description')
-        price = request.POST.get('price')
-        category = request.POST.get('category')
-        # image = 'product/photo/' + str(request.POST.get('image'))
-
-        time_of_creation = (datetime.now()).strftime('%Y-%m-%d')
-
-        try:
-            image = handle_uploaded_file(request.FILES['image'], f"{time_of_creation}_{name}_")
-        except:
-            print("Изображения-то нет...")
-            image = None
-
-
-
-
-
-        # time_of_creation = (datetime.now()).strftime('%Y-%m-%d')
-
-
-
-        info = {'created_at': time_of_creation,
-                'updated_at': time_of_creation,
-                'name': name, 'price': price, 'description': description,
-                'category': Category.objects.get(id=category), 'image': image
-                }
-
-        print(info)
-        Product.objects.create(**info)
-
-        # handle_uploaded_file(request.FILES['image'], f"{time_of_creation}_{name}_")
-
-        # product_for_create.append(
-        #     Product(
-        #         pk=item["pk"],
-        #         name=item["fields"]["name"],
-        #         description=item["fields"]["description"],
-        #         image=item["fields"]["image"],
-        #         category=Category.objects.get(id=item["fields"]["category"]),
-        #         price=item["fields"]["price"],
-        #         created_at=item["fields"]["created_at"],
-        #         updated_at=item["fields"]["updated_at"],
-        #     )
-        # )
-
-        # Product.objects.bulk_create(product_for_create)
-
-    return render(request, 'catalog/create_product.html', context)
+    return render(request, "catalog/contacts.html", context)
