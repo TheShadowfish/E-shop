@@ -6,7 +6,7 @@ import os
 
 from django.urls import reverse_lazy, reverse
 from pytils.translit import slugify
-from functions.utils import send_email
+from article.functions.utils import send_email
 
 from article.models import Article
 
