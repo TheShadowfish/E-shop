@@ -15,7 +15,7 @@
 
             <div class="card-body">
                 <h5 class="card-title">
-                    <div style="color: orange"><b>{{object.name}}}</b></div>
+                    <div style="color: orange"><b>{{object.name}}</b></div>
                 </h5>
                 <p class="card-text">
                     {% if object.body|length >= 100 %}
@@ -25,13 +25,13 @@
                     {% endif %}
                 </p>
                 <div class="btn-group">
-                    <a class="btn btn-primary" href="{% url 'article:article_detail' object.pk%}" role="button">Посмотреть</a>
+                    <a class="btn btn-success" href="{% url 'article:article_detail' object.pk%}" role="button">Посмотреть</a>
 
 
-                    <a class="btn btn-primary" href="{% url 'article:article_update' object.pk%}"
+                    <a class="btn btn-success" href="{% url 'article:article_update' object.pk%}"
                        role="button">Изменить</a>
 
-                    <a class="btn btn-primary" href="{% url 'article:article_delete' object.pk%}"
+                    <a class="btn btn-danger" href="{% url 'article:article_delete' object.pk%}"
                        role="button">Удалить</a>
                 </div>
 

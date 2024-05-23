@@ -37,7 +37,7 @@ class ArticleUpdateView(UpdateView):
 
 class ArticleDeleteView(DeleteView):
     model = Article
-    success_url = reverse_lazy('article:home')
+    success_url = reverse_lazy('article:blog')
 
 #
 # class ContactsPageViews(CreateView):
