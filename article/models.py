@@ -62,3 +62,15 @@ class Article(models.Model):
         self.slug = slugify(self.name)
         super(Article, self).save(*args, **kwargs)
 
+class Tag(models.Model):
+    title = models.CharField(max_length=100, verbose_name='название')
+    decription = models.TextField(verbose_name='описание сути')
+
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, verbose_name='статья')
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = "Тег статьи"
+        verbose_name_plural = "Теги статьи"
