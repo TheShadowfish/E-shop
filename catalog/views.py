@@ -4,6 +4,7 @@ import os
 
 from django.urls import reverse_lazy
 
+from catalog.forms import ProductForm
 from catalog.models import Category, Product, Contact
 
 from django.views.generic import (
@@ -39,40 +40,46 @@ class ProductDetailView(DetailView):
 
 
 class ProductCreateView(CreateView):
-    """Product
-    - Наименование name
-    - Описание description
-    - Изображение (превью) image
-    - Категория category
-    - Цена за покупку price
-    - Дата создания (записи в БД) created_at
-    - Дата последнего изменения (записи в БД) updated_at"""
-
     model = Product
-    fields = (
-        "name",
-        "description",
-        "image",
-        "category",
-        "price",
-        "created_at",
-        "updated_at",
-    )
+    form_class = ProductForm
     success_url = reverse_lazy("catalog:home")
+    # """Product
+    # - Наименование name
+    # - Описание description
+    # - Изображение (превью) image
+    # - Категория category
+    # - Цена за покупку price
+    # - Дата создания (записи в БД) created_at
+    # - Дата последнего изменения (записи в БД) updated_at"""
+    #
+    # model = Product
+    # fields = (
+    #     "name",
+    #     "description",
+    #     "image",
+    #     "category",
+    #     "price",
+    #     "created_at",
+    #     "updated_at",
+    # )
+    # success_url = reverse_lazy("catalog:home")
 
 
 class ProductUpdateView(UpdateView):
     model = Product
-    fields = (
-        "name",
-        "description",
-        "image",
-        "category",
-        "price",
-        "created_at",
-        "updated_at",
-    )
+    form_class = ProductForm
     success_url = reverse_lazy("catalog:home")
+    # model = Product
+    # fields = (
+    #     "name",
+    #     "description",
+    #     "image",
+    #     "category",
+    #     "price",
+    #     "created_at",
+    #     "updated_at",
+    # )
+    # success_url = reverse_lazy("catalog:home")
 
 
 class ProductDeleteView(DeleteView):
