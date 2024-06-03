@@ -1,11 +1,6 @@
-from django.shortcuts import render
-
-from django.shortcuts import render, get_object_or_404
-from datetime import datetime
-import os
-
 from django.urls import reverse_lazy, reverse
-from pytils.translit import slugify
+
+from article.forms import ArticleForm
 from article.functions.utils import send_email
 
 from article.models import Article
@@ -47,45 +42,34 @@ class ArticleDetailView(DetailView):
 class ArticleCreateView(CreateView):
 
     model = Article
-    fields = (
-        "name",
-        "body",
-        "image",
-        "created_at",
-        "is_published",
-        "views_count",
-    )
-
+    form_class = ArticleForm
     success_url = reverse_lazy("article:blog")
-
-    def form_valid(self, form):
-        if form.is_valid():
-            new_article = form.save()
-            new_article.slug = slugify(new_article.name)
-            new_article.save()
-        return super().form_valid(form)
+    # fields = (
+    #     "name",
+    #     "body",
+    #     "image",
+    #     "created_at",
+    #     "is_published",
+    #     "views_count",
+    # )
+    #
+    # success_url = reverse_lazy("article:blog")
+    #
+    # def form_valid(self, form):
+    #     if form.is_valid():
+    #         new_article = form.save()
+    #         new_article.slug = slugify(new_article.name)
+    #         new_article.save()
+    #     return super().form_valid(form)
 
 
 class ArticleUpdateView(UpdateView):
     model = Article
-    fields = (
-        "name",
-        "body",
-        "image",
-        "created_at",
-        "is_published",
-        "views_count",
-    )
-    # success_url = reverse_lazy('article:blog')
+    form_class = ArticleForm
+    success_url = reverse_lazy("article:blog")
 
-    def form_valid(self, form):
-        if form.is_valid():
-            new_article = form.save()
-            new_article.slug = slugify(new_article.name)
-            new_article.save()
-        return super().form_valid(form)
 
-    def get_success_url(self):
+def get_success_url(self):
         return reverse("article:article_detail", args=[self.kwargs.get("pk")])
 
 
