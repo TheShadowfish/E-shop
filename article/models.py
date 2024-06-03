@@ -18,7 +18,7 @@ class Article(models.Model):
     """
 
     name = models.CharField(
-        max_length=100, verbose_name="Заголовок", help_text="Введите заголовок статьи"
+        max_length=100, verbose_name="Заголовок", unique=True, help_text="Введите заголовок статьи"
     )
     slug = models.CharField(
         max_length=150, verbose_name="slug", help_text="slug", **NULLABLE

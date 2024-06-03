@@ -71,6 +71,8 @@ class Product(models.Model):
 
     price = models.IntegerField(verbose_name="Цена", help_text="Введите цену продукта")
 
+
+
     created_at = models.DateField(
         **NULLABLE,
         verbose_name="Дата создания",
