@@ -1,6 +1,7 @@
 from django.db import models
-from django.utils.text import slugify
+# from django.utils.text import slugify
 from django.utils import timezone
+from pytils.translit import slugify
 
 NULLABLE = {"blank": True, "null": True}
 
@@ -56,3 +57,8 @@ class Article(models.Model):
     class Meta:
         verbose_name = "Запись в блоге"
         verbose_name_plural = "Записи в блоге"
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Article, self).save(*args, **kwargs)
+
