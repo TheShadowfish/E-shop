@@ -1,7 +1,7 @@
-from django.core.exceptions import ValidationError
 from django.forms import ModelForm, BooleanField
 from django.utils import timezone
 from dogs.models import Dog, Parent
+from django import forms
 
 class StyleFormMixin:
     def __init__(self, *args, **kwargs):
@@ -26,10 +26,13 @@ class ParentForm(StyleFormMixin, ModelForm):
         model = Parent
         fields = '__all__'
 
-    def clean_year_born(self):
-        year_born = self.cleaned_data['year_born']
+    def clean(self):
+        cleaned_data = self.cleaned_data['year_born']
+        year_born = int(self.cleaned_data['year_born'])
         current_year = timezone.now().year
         timedelta = current_year - year_born
         if timedelta >= 100:
-            raise ValidationError("Собаки столько не живут. проверьте год рождения.")
-        return year_born
+            raise forms.ValidationError("Собаки столько не живут. проверьте год рождения.")
+
+        return self.cleaned_data
+
