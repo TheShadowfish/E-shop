@@ -133,3 +133,41 @@ class Contact(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.phone}"
+
+
+
+
+class Version(models.Model):
+    """
+    - продукт,
+- номер версии,
+- название версии,
+- признак текущей версии.
+    """
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        verbose_name="продукт",
+        help_text="название продукта",
+        related_name="products",
+    )
+    number = models.PositiveIntegerField(
+        verbose_name="Номер версии",
+        help_text="укажите номер версии",
+    )
+    name = models.CharField(
+        max_length=100,
+        verbose_name="Название версии",
+        help_text="Введите название версии",
+    )
+    sign = models.BooleanField(
+        verbose_name="Признак текущей версии")
+
+
+    class Meta:
+        verbose_name = "Версия"
+        verbose_name_plural = "Версии"
+        ordering = ["number", "name"]
+
+    def __str__(self):
+        return f"{self.number}-{self.name}:{self.sign}"
