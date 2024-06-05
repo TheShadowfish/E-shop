@@ -75,13 +75,11 @@ class Product(models.Model):
         **NULLABLE,
         verbose_name="Дата создания",
         help_text="Укажите дату создания",
-        default=timezone.now(),
     )
     updated_at = models.DateField(
         **NULLABLE,
         verbose_name="Дата изменения",
         help_text="Укажите дату изменения",
-        default=timezone.now(),
     )
 
     class Meta:
@@ -93,20 +91,39 @@ class Product(models.Model):
         return self.name
 
 
-class Contact(models.Model):
-    """
-    info = {'time': (datetime.now()).strftime('%Y-%m-%dT%H:%M:%S.%f'),
-            'name': name, 'phone': phone, 'message': message
-            }
-    """
 
-    """
-    Contact
-    - Имя name
-    - Телефон phone
-    - Сообщение message
-    - Время отправки time
-    """
+
+class Version(models.Model):
+
+    product = models.ForeignKey(Product,
+        on_delete=models.CASCADE,
+        verbose_name="продукт",
+        help_text="название продукта",
+        related_name="version",
+    )
+    number = models.PositiveIntegerField(
+        verbose_name="Номер версии",
+        help_text="укажите номер версии",
+    )
+    name = models.CharField(
+        max_length=100,
+        verbose_name="Название версии",
+        help_text="Введите название версии",
+    )
+    sign = models.BooleanField(
+        verbose_name="Признак текущей версии")
+
+
+    class Meta:
+        verbose_name = "Версия"
+        verbose_name_plural = "Версии"
+        ordering = ["number", "name"]
+
+    def __str__(self):
+        return f"{self.number}-{self.name}:{self.sign}"
+
+
+class Contact(models.Model):
     name = models.CharField(
         max_length=50,
         verbose_name="Имя контакта",
@@ -134,40 +151,3 @@ class Contact(models.Model):
     def __str__(self):
         return f"{self.name} - {self.phone}"
 
-
-
-
-class Version(models.Model):
-    """
-    - продукт,
-- номер версии,
-- название версии,
-- признак текущей версии.
-    """
-    product = models.ForeignKey(
-        Product,
-        on_delete=models.CASCADE,
-        verbose_name="продукт",
-        help_text="название продукта",
-        related_name="products",
-    )
-    number = models.PositiveIntegerField(
-        verbose_name="Номер версии",
-        help_text="укажите номер версии",
-    )
-    name = models.CharField(
-        max_length=100,
-        verbose_name="Название версии",
-        help_text="Введите название версии",
-    )
-    sign = models.BooleanField(
-        verbose_name="Признак текущей версии")
-
-
-    class Meta:
-        verbose_name = "Версия"
-        verbose_name_plural = "Версии"
-        ordering = ["number", "name"]
-
-    def __str__(self):
-        return f"{self.number}-{self.name}:{self.sign}"

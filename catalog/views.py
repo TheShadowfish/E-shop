@@ -5,7 +5,7 @@ import os
 from django.urls import reverse_lazy
 
 from catalog.forms import ProductForm
-from catalog.models import Category, Product, Contact
+from catalog.models import Category, Product, Contact, Version
 
 from django.views.generic import (
     ListView,
@@ -24,10 +24,10 @@ class ProductListView(ListView):
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
 
-        if self.request.method == 'POST':
-            context_data['formset'] = TagFormSet(self.request.POST, instance=self.object)
-        else:
-            context_data['formset'] = TagFormSet(instance=self.object)
+        # for data in context_data:
+        #     # print(f"PK: {data['pk']}")
+        #     queryset = Version.objects.get(data['pk'])
+        #     print(queryset)
 
         return context_data
 
