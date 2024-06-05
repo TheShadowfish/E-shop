@@ -99,7 +99,7 @@ class Version(models.Model):
         on_delete=models.CASCADE,
         verbose_name="продукт",
         help_text="название продукта",
-        related_name="version",
+        related_name="product",
     )
     number = models.PositiveIntegerField(
         verbose_name="Номер версии",

@@ -19,16 +19,10 @@ from django.views.generic import (
 
 class ProductListView(ListView):
     model = Product
-    queryset = model.objects.all()  # Default: Model.objects.all()
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
-
-        # for data in context_data:
-        #     # print(f"PK: {data['pk']}")
-        #     queryset = Version.objects.get(data['pk'])
-        #     print(queryset)
-
+        context_data['version'] = Version.objects.all()
         return context_data
 
 
@@ -36,39 +30,25 @@ class ProductListView(ListView):
 """
 # Задание 2
 
-
 - При наличии активной версии реализуйте вывод в список продуктов информации об активной версии.
 Для отображения активной версии расширьте метод 
 get_context_data()
  контроллера списка продуктов, получите данные о версиях продукта и выберите текущую (активную) версию для продукта.
- def get_context_data(self, **kwargs):
+"""
+class PaginateGetContextMixin:
+    def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
-        TagFormSet = inlineformset_factory(Article, Tag, form=TagForm, extra=1)
-        if self.request.method == 'POST':
-            context_data['formset'] = TagFormSet(self.request.POST, instance=self.object)
-        else:
-            context_data['formset'] = TagFormSet( instance=self.object)
-
+        context_data['version'] = Version.objects.all()
         return context_data
 
-    def form_valid(self, form):
-        formset = self.get_context_data()['formset']
-        self.object = form.save()
-        if formset.is_valid():
-            formset.instance = self.object
-            formset.save()
 
-        return super().form_valid(form)
-
-"""
-
-class ProductPaginate2ListView(ListView):
+class ProductPaginate2ListView(PaginateGetContextMixin, ListView):
     model = Product
     paginate_by = 2
     queryset = model.objects.all()  # Default: Model.objects.all()
 
 
-class ProductPaginate3ListView(ListView):
+class ProductPaginate3ListView(PaginateGetContextMixin, ListView):
     model = Product
     paginate_by = 3
     queryset = model.objects.all()  # Default: Model.objects.all()
