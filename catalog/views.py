@@ -4,7 +4,7 @@ import os
 
 from django.urls import reverse_lazy
 
-from catalog.forms import ProductForm
+from catalog.forms import ProductForm, ContactForm
 from catalog.models import Category, Product, Contact, Version
 
 from django.views.generic import (
@@ -16,42 +16,26 @@ from django.views.generic import (
     TemplateView,
 )
 
+class GetContextMixin:
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data['version'] = Version.objects.all()
+        return context_data
 
-class ProductListView(ListView):
+
+class ProductListView(GetContextMixin, ListView):
     model = Product
 
-    def get_context_data(self, **kwargs):
-        context_data = super().get_context_data(**kwargs)
-        context_data['version'] = Version.objects.all()
-        return context_data
-
-
-
-"""
-# Задание 2
-
-- При наличии активной версии реализуйте вывод в список продуктов информации об активной версии.
-Для отображения активной версии расширьте метод 
-get_context_data()
- контроллера списка продуктов, получите данные о версиях продукта и выберите текущую (активную) версию для продукта.
-"""
-class PaginateGetContextMixin:
-    def get_context_data(self, **kwargs):
-        context_data = super().get_context_data(**kwargs)
-        context_data['version'] = Version.objects.all()
-        return context_data
-
-
-class ProductPaginate2ListView(PaginateGetContextMixin, ListView):
+class Product2ListView(GetContextMixin, ListView):
     model = Product
     paginate_by = 2
-    queryset = model.objects.all()  # Default: Model.objects.all()
+    # queryset = model.objects.all()  # Default: Model.objects.all()
 
 
-class ProductPaginate3ListView(PaginateGetContextMixin, ListView):
+class Product3ListView(GetContextMixin, ListView):
     model = Product
     paginate_by = 3
-    queryset = model.objects.all()  # Default: Model.objects.all()
+    # queryset = model.objects.all()  # Default: Model.objects.all()
 
 
 class ProductDetailView(DetailView):
@@ -62,44 +46,11 @@ class ProductCreateView(CreateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy("catalog:home")
-    # """Product
-    # - Наименование name
-    # - Описание description
-    # - Изображение (превью) image
-    # - Категория category
-    # - Цена за покупку price
-    # - Дата создания (записи в БД) created_at
-    # - Дата последнего изменения (записи в БД) updated_at"""
-    #
-    # model = Product
-    # fields = (
-    #     "name",
-    #     "description",
-    #     "image",
-    #     "category",
-    #     "price",
-    #     "created_at",
-    #     "updated_at",
-    # )
-    # success_url = reverse_lazy("catalog:home")
-
 
 class ProductUpdateView(UpdateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy("catalog:home")
-    # model = Product
-    # fields = (
-    #     "name",
-    #     "description",
-    #     "image",
-    #     "category",
-    #     "price",
-    #     "created_at",
-    #     "updated_at",
-    # )
-    # success_url = reverse_lazy("catalog:home")
-
 
 class ProductDeleteView(DeleteView):
     model = Product
@@ -108,11 +59,12 @@ class ProductDeleteView(DeleteView):
 
 class ContactsPageViews(CreateView):
     model = Contact
-    fields = (
-        "name",
-        "phone",
-        "message",
-    )
+    form_class = ContactForm
+    # fields = (
+    #     "name",
+    #     "phone",
+    #     "message",
+    # )
     success_url = reverse_lazy("catalog:contacts")
     template_name = "catalog/contacts.html"
 

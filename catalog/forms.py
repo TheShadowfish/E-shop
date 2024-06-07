@@ -1,5 +1,6 @@
 from django import forms
-from catalog.models import Product
+from catalog.models import Product, Contact
+
 
 class ProductForm(forms.ModelForm):
 
@@ -26,3 +27,13 @@ class ProductForm(forms.ModelForm):
 
         else:
             return self.cleaned_data
+
+class ContactForm(forms.ModelForm):
+
+    class Meta:
+        model = Contact
+        fields = (
+            "name",
+            "phone",
+            "message",
+        )
