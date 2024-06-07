@@ -5,119 +5,55 @@
 
 
 <div class="row text-right">
-    {% for object in object_list %}
-
-    <div class="col-4">
+    <div class="col-12">
 
         <div class="card mb-3 box-shadow">
-            <img src="{{ object.image | media_filter }}" class="card-img-top" alt={{object.image|media_filter}}>
-
-
             <div class="card-body">
-                <h5 class="card-title">
-                    <div style="color: orange"><b>{{object | title}}</b></div>
-                </h5>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Номер версии</th>
+                        <th scope="col">Название</th>
+                        <th scope="col">Актуальность</th>
+                        <th scope="col">info btn</th>
+                        <th scope="col">change btn</th>
+                        <th scope="col">del btn</th>
+                    </tr>
+                    </thead>
+                    <tbody>
 
-                <p class="card-text">
-                    {{ object.number }}
-                    {{ object.name }}
-                    {{ object.sign }}
-
-                </p>
-
-
-
-
-                <br>
-
+                    {% load my_tags %}
 
 
+                    {% for object in object_list %}
 
-                <div class="btn-group">
-                    <a class="btn btn-primary" href="{% url 'catalog:product_detail' object.pk%}" role="button">Посмотреть</a>
+                    <tr>
+                        <td>{{ object.number }}</td>
+                        <td>{{ object.name }}</td>
+                        <td>{{ object.sign }}</td>
+                        <td><a class="btn btn-primary" href="{% url 'catalog:product_detail' object.pk%}"
+                               role="button">Посмотреть</a></td>
+                        <td><a class="btn btn-primary" href="{% url 'catalog:product_update' object.pk%}" role="button">Изменить</a>
+                        </td>
+                        <td><a class="btn btn-primary" href="{% url 'catalog:product_delete' object.pk%}" role="button">Удалить</a>
+                        </td>
 
-
-                    <a class="btn btn-primary" href="{% url 'catalog:product_update' object.pk%}"
-                       role="button">Изменить</a>
-
-                    <a class="btn btn-primary" href="{% url 'catalog:product_delete' object.pk%}"
-                       role="button">Удалить</a>
-                </div>
-
-            </div>
-        </div>
-
-
-    </div>
-    {% endfor %}
-
-
-</div>
-
-
-{% if is_paginated %}
-
-<div class="col-12">
-    <div class="card mb-3 box-shadow">
-
-        <div class="card-body">
-
-            <div class="btn-group">
-
-
-                <ul class="pagination">
-                    {% if page_obj.has_previous %}
-
-
-                    <li>
-
-                        <a class="p-2 btn btn-outline-primary"
-                           href="?page={{ page_obj.previous_page_number }}"
-                           role="button"> &laquo; </a> &nbsp;
-
-
-                    </li>
-                    {% else %}
-
-                    <li class="disabled p-2 btn btn-outline-primary" role="button"><span>&laquo;</span></li> &nbsp;
-                    {% endif %}
-
-
-                    {% for i in paginator.page_range %}
-                    {% if page_obj.number == i %}
-                    <li class="disabled p-2 btn btn-outline-primary" role="button"><span>{{ i }}(текущая);</span></li>
-                    &nbsp;
-                    {% else %}
-                    <li>
-
-
-                        <a class="p-2 btn btn-outline-primary"
-                           href="?page={{ i }}"
-                           role="button"> {{ i }} </a> &nbsp;
-
-                    </li>
-                    {% endif %}
+                    </tr>
                     {% endfor %}
-                    {% if page_obj.has_next %}
-                    <li>
 
-                        <a class="p-2 btn btn-outline-primary"
-                           href="?page={{ page_obj.next_page_number }}"
-                           role="button"> &raquo; </a>
+                    </tbody>
+                </table>
 
-                    </li>
-                    {% else %}
-                    <li class="disabled p-2 btn btn-outline-primary" role="button"><span>&raquo; </span></li> &nbsp;
-                    {% endif %}
-                </ul>
 
             </div>
-
         </div>
-    </div>
-</div>
 
-{% endif %}
+
+    </div>
+
+
+
+</div>
 
 
 </div>
