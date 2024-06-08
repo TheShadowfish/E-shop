@@ -106,5 +106,8 @@ def contacts(request):
     return render(request, "catalog/contacts.html", context)
 
 
-class VersionListView(GetContextMixin, ListView):
+class VersionListView(ListView):
+    model = Version
+
+class VersionDetailView(DetailView):
     model = Version

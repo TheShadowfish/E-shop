@@ -14,6 +14,7 @@
                     <tr>
                         <th scope="col">Номер версии</th>
                         <th scope="col">Название</th>
+                        <th scope="col">Продукт</th>
                         <th scope="col">Актуальность</th>
                         <th scope="col">info btn</th>
                         <th scope="col">change btn</th>
@@ -30,9 +31,11 @@
                     <tr>
                         <td>{{ object.number }}</td>
                         <td>{{ object.name }}</td>
+                        <td>{{ object.product}}</td>
                         <td>{{ object.sign }}</td>
-                        <td><a class="btn btn-primary" href="{% url 'catalog:product_detail' object.pk%}"
+                        <td><a class="btn btn-primary" href="{% url 'catalog:version_detail' object.pk%}"
                                role="button">Посмотреть</a></td>
+
                         <td><a class="btn btn-primary" href="{% url 'catalog:product_update' object.pk%}" role="button">Изменить</a>
                         </td>
                         <td><a class="btn btn-primary" href="{% url 'catalog:product_delete' object.pk%}" role="button">Удалить</a>
