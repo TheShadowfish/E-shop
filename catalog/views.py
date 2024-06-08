@@ -1,6 +1,5 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from datetime import datetime
-import os
 
 from django.urls import reverse_lazy
 
@@ -13,8 +12,8 @@ from django.views.generic import (
     CreateView,
     UpdateView,
     DeleteView,
-    TemplateView,
 )
+
 
 class GetContextMixin:
     def get_context_data(self, **kwargs):
@@ -25,6 +24,7 @@ class GetContextMixin:
 
 class ProductListView(GetContextMixin, ListView):
     model = Product
+
 
 class Product2ListView(GetContextMixin, ListView):
     model = Product
@@ -47,10 +47,12 @@ class ProductCreateView(CreateView):
     form_class = ProductForm
     success_url = reverse_lazy("catalog:home")
 
+
 class ProductUpdateView(UpdateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy("catalog:home")
+
 
 class ProductDeleteView(DeleteView):
     model = Product
@@ -73,7 +75,7 @@ class ContactsPageViews(CreateView):
 
         number = len(Contact.objects.all())
         if number > 5:
-            context["latest_contacts"] = Contact.objects.all()[number - 5 : number + 1]
+            context["latest_contacts"] = Contact.objects.all()[number - 5: number + 1]
         else:
             context["latest_contacts"] = Contact.objects.all()
 
@@ -83,7 +85,7 @@ class ContactsPageViews(CreateView):
 def contacts(request):
     number = len(Contact.objects.all())
     if number > 5:
-        contacts_list = Contact.objects.all()[number - 5 : number + 1]
+        contacts_list = Contact.objects.all()[number - 5: number + 1]
     else:
         contacts_list = Contact.objects.all()
 
@@ -109,6 +111,7 @@ def contacts(request):
 class VersionListView(ListView):
     model = Version
 
+
 class VersionDetailView(DetailView):
     model = Version
 
@@ -118,14 +121,13 @@ class VersionCreateView(CreateView):
     form_class = VersionForm
     success_url = reverse_lazy("catalog:versions")
 
+
 class VersionUpdateView(UpdateView):
     model = Version
     form_class = VersionForm
     success_url = reverse_lazy("catalog:versions")
 
+
 class VersionDeleteView(DeleteView):
     model = Version
     success_url = reverse_lazy("catalog:versions")
-
-
-

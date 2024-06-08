@@ -13,8 +13,8 @@ class StyleFormMixin:
             else:
                 field.widget.attrs['class'] = 'form-control'
 
-class ProductForm(StyleFormMixin, forms.ModelForm):
 
+class ProductForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Product
         fields = '__all__'
@@ -27,6 +27,7 @@ class ProductForm(StyleFormMixin, forms.ModelForm):
         #     "created_at",
         #     "updated_at",
         # ) казино, криптовалюта, крипта, биржа, дешево, бесплатно, обман, полиция, радар
+
     def clean(self):
         blacklist = ['казино', 'криптовалюта', 'крипта', 'биржа', 'дешево', 'бесплатно', 'обман', 'полиция', 'радар']
 
@@ -34,13 +35,14 @@ class ProductForm(StyleFormMixin, forms.ModelForm):
 
         for b_word in blacklist:
             if b_word in cleaned_data:
-                raise forms.ValidationError('Нельзя использовать слова из списка запрещенных (казино, криптовалюта, крипта, биржа, дешево, бесплатно, обман, полиция, радар)')
+                raise forms.ValidationError(
+                    'Нельзя использовать слова из списка запрещенных (казино, криптовалюта, крипта, биржа, дешево, бесплатно, обман, полиция, радар)')
 
         else:
             return self.cleaned_data
 
-class ContactForm(StyleFormMixin, forms.ModelForm):
 
+class ContactForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Contact
         fields = (
@@ -49,10 +51,35 @@ class ContactForm(StyleFormMixin, forms.ModelForm):
             "message",
         )
 
-class VersionForm(StyleFormMixin, forms.ModelForm):
 
+class VersionForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Version
         fields = "__all__"
 
         """    product, number, name, sign """
+
+        """# Дополнительное задание
+В один момент может быть только одна активная версия продукта, поэтому при изменении версий необходимо проверять, 
+что пользователь в качестве активной версии указал только одну. 
+В случае возникновения ошибки вернуть сообщение пользователю и попросить выбрать только одну активную версию.
+
+Дополнительное задание, помеченное звездочкой, желательно, но не обязательно выполнять."""
+    def clean(self):
+
+
+        cleaned_data = self.cleaned_data
+        version_list = Version.objects.all()
+
+        one_is_yet = False
+        for version in version_list:
+
+            if version.product == cleaned_data['product'] and version.sign and cleaned_data['sign']:
+                if one_is_yet:
+                    raise forms.ValidationError(
+                    f'Нельзя иметь две активных версии продукта одновременно. Измените версию {version}')
+                else:
+                    one_is_yet = True
+
+        else:
+            return self.cleaned_data
