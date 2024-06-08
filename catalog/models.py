@@ -91,16 +91,13 @@ class Product(models.Model):
         return self.name
 
 
-
-
 class Version(models.Model):
-
     product = models.ForeignKey(Product,
-        on_delete=models.CASCADE,
-        verbose_name="продукт",
-        help_text="название продукта",
-        related_name="product",
-    )
+                                on_delete=models.CASCADE,
+                                verbose_name="продукт",
+                                help_text="название продукта",
+                                related_name="product",
+                                )
     number = models.PositiveIntegerField(
         verbose_name="Номер версии",
         help_text="укажите номер версии",
@@ -112,7 +109,6 @@ class Version(models.Model):
     )
     sign = models.BooleanField(
         verbose_name="Признак текущей версии")
-
 
     class Meta:
         verbose_name = "Версия"
@@ -150,4 +146,3 @@ class Contact(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.phone}"
-

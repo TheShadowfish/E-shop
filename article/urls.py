@@ -1,7 +1,5 @@
 from django.urls import path
 from article.apps import ArticleConfig
-from catalog.views import contacts
-# home, product_detail,  product_detail, catalog, create
 from article.views import ArticleListView, ArticleDetailView, ArticleCreateView, ArticleUpdateView, ArticleDeleteView
 
 app_name = ArticleConfig.name

@@ -36,7 +36,8 @@ class ProductForm(StyleFormMixin, forms.ModelForm):
         for b_word in blacklist:
             if b_word in cleaned_data:
                 raise forms.ValidationError(
-                    'Нельзя использовать слова из списка запрещенных (казино, криптовалюта, крипта, биржа, дешево, бесплатно, обман, полиция, радар)')
+                    'Нельзя использовать слова из списка запрещенных (казино, криптовалюта, крипта, биржа, дешево, '
+                    'бесплатно, обман, полиция, радар)')
 
         else:
             return self.cleaned_data
@@ -70,7 +71,7 @@ class VersionForm(StyleFormMixin, forms.ModelForm):
             if version.product == cleaned_data['product'] and version.sign and cleaned_data['sign']:
                 if one_is_yet:
                     raise forms.ValidationError(
-                    f'Нельзя иметь две активных версии продукта одновременно. Измените версию {version}')
+                        f'Нельзя иметь две активных версии продукта одновременно. Измените версию {version}')
                 else:
                     one_is_yet = True
 

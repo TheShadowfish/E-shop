@@ -19,6 +19,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ("category",)
     search_fields = ("name", "description")
 
+
 @admin.register(Version)
 class Product_versionAdmin(admin.ModelAdmin):
     list_display = ("id", "sign", "number", "name", "product")
@@ -29,6 +30,7 @@ class Product_versionAdmin(admin.ModelAdmin):
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ("id", "name")
+
 
 @admin.register(Contact)
 class CategoryAdmin(admin.ModelAdmin):

@@ -6,7 +6,7 @@ NULLABLE = {"blank": True, "null": True}
 
 class Article(models.Model):
     """
-    заголовок; title
+    Заголовок; title
     slug (реализовать через CharField);
     содержимое; body
     превью (изображение); image

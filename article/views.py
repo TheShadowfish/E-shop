@@ -1,9 +1,3 @@
-from django.shortcuts import render
-
-from django.shortcuts import render, get_object_or_404
-from datetime import datetime
-import os
-
 from django.urls import reverse_lazy, reverse
 from pytils.translit import slugify
 from article.functions.utils import send_email

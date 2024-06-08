@@ -4,7 +4,7 @@ from datetime import datetime
 from django.urls import reverse_lazy
 
 from catalog.forms import ProductForm, ContactForm, VersionForm
-from catalog.models import Category, Product, Contact, Version
+from catalog.models import Product, Contact, Version
 
 from django.views.generic import (
     ListView,
