@@ -17,13 +17,32 @@
                 <h5 class="card-title">
                     <div style="color: orange"><b>{{object | title}}</b></div>
                 </h5>
+                {% for v in version %}
+                {% if v.product == object and  v.sign == True%}
+
+                <p class="card-text">
+                <li><b>Версия товара:</b>&nbsp;&nbsp;    #{{v.number}} - {{v.name}}</li>
+                </p>
+                {% endif %}
+
+
+                {% endfor %}
+
+
                 <p class="card-text">
                     {% if object.description|length >= 100 %}
                     {{ object.description|slice:":100"}} ...
-                    {% else %}
-                    {{ object.description}}
                     {% endif %}
                 </p>
+
+
+
+
+                <br>
+
+
+
+
                 <div class="btn-group">
                     <a class="btn btn-primary" href="{% url 'catalog:product_detail' object.pk%}" role="button">Посмотреть</a>
 
@@ -60,12 +79,9 @@
                     {% if page_obj.has_previous %}
 
 
-
-
-
                     <li>
 
-                    <a class="p-2 btn btn-outline-primary"
+                        <a class="p-2 btn btn-outline-primary"
                            href="?page={{ page_obj.previous_page_number }}"
                            role="button"> &laquo; </a> &nbsp;
 
@@ -79,14 +95,15 @@
 
                     {% for i in paginator.page_range %}
                     {% if page_obj.number == i %}
-                    <li class="disabled p-2 btn btn-outline-primary" role="button"><span>{{ i }}(текущая);</span></li> &nbsp;
+                    <li class="disabled p-2 btn btn-outline-primary" role="button"><span>{{ i }}(текущая);</span></li>
+                    &nbsp;
                     {% else %}
                     <li>
 
 
                         <a class="p-2 btn btn-outline-primary"
                            href="?page={{ i }}"
-                           role="button"> {{ i }}  </a> &nbsp;
+                           role="button"> {{ i }} </a> &nbsp;
 
                     </li>
                     {% endif %}
