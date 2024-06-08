@@ -12,7 +12,7 @@ from catalog.views import (
     Product3ListView,
     ContactsPageViews,
     VersionListView,
-    VersionDetailView,
+    VersionDetailView, VersionCreateView, VersionUpdateView, VersionDeleteView,
 
 )
 
@@ -29,6 +29,9 @@ urlpatterns = [
     path("product/<int:pk>/delete/", ProductDeleteView.as_view(), name="product_delete"),
     path("versions/", VersionListView.as_view(), name="versions"),
     path("versions/<int:pk>/", VersionDetailView.as_view(), name="version_detail"),
+    path("version_create/", VersionCreateView.as_view(), name="version_create"),
+    path("version/<int:pk>/update/", VersionUpdateView.as_view(), name = "version_update"),
 
+    path("version/<int:pk>/delete/", VersionDeleteView.as_view(), name="version_delete"),
 
 ]

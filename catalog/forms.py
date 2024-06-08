@@ -1,5 +1,5 @@
 from django import forms
-from catalog.models import Product, Contact
+from catalog.models import Product, Contact, Version
 
 
 class ProductForm(forms.ModelForm):
@@ -37,3 +37,11 @@ class ContactForm(forms.ModelForm):
             "phone",
             "message",
         )
+
+class VersionForm(forms.ModelForm):
+
+    class Meta:
+        model = Version
+        fields = "__all__"
+
+        """    product, number, name, sign """

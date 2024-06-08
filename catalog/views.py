@@ -4,7 +4,7 @@ import os
 
 from django.urls import reverse_lazy
 
-from catalog.forms import ProductForm, ContactForm
+from catalog.forms import ProductForm, ContactForm, VersionForm
 from catalog.models import Category, Product, Contact, Version
 
 from django.views.generic import (
@@ -111,3 +111,21 @@ class VersionListView(ListView):
 
 class VersionDetailView(DetailView):
     model = Version
+
+
+class VersionCreateView(CreateView):
+    model = Version
+    form_class = VersionForm
+    success_url = reverse_lazy("catalog:versions")
+
+class VersionUpdateView(UpdateView):
+    model = Version
+    form_class = VersionForm
+    success_url = reverse_lazy("catalog:versions")
+
+class VersionDeleteView(DeleteView):
+    model = Version
+    success_url = reverse_lazy("catalog:versions")
+
+
+

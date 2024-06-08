@@ -9,6 +9,10 @@
 
         <div class="card mb-3 box-shadow">
             <div class="card-body">
+                <a class="btn btn-primary" href="{% url 'catalog:version_create' %}" role="button">Создать версию продукта</a>
+                <br><br>
+
+
                 <table class="table">
                     <thead>
                     <tr>
@@ -36,9 +40,9 @@
                         <td><a class="btn btn-primary" href="{% url 'catalog:version_detail' object.pk%}"
                                role="button">Посмотреть</a></td>
 
-                        <td><a class="btn btn-primary" href="{% url 'catalog:product_update' object.pk%}" role="button">Изменить</a>
+                        <td><a class="btn btn-primary" href="{% url 'catalog:version_update' object.pk%}" role="button">Изменить</a>
                         </td>
-                        <td><a class="btn btn-primary" href="{% url 'catalog:product_delete' object.pk%}" role="button">Удалить</a>
+                        <td><a class="btn btn-primary" href="{% url 'catalog:version_delete' object.pk%}" role="button">Удалить</a>
                         </td>
 
                     </tr>

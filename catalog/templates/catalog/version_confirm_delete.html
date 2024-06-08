@@ -11,12 +11,11 @@
             </div>
             <div class="card-body">
 
-                <div class="card-text">Вы действительно хотите удалить продукт {{object.name}} ?</div>
+            <div class="card-text">Вы действительно хотите удалить версию продукта {{object.name}} ?</div>
                 <form method="post" action="" class="form-floating" enctype="multipart/form-data">
                     <div class="mb-3">
 
-                        {% csrf_token %}
-
+                    {% csrf_token %}
 
                     </div>
 
@@ -25,13 +24,14 @@
                         Удалить
                     </button>
 
-                    <a class="btn btn-lg btn-block btn-outline-primary" href="{% url 'catalog:home' %}">Отмена</a>
+                    <a class="btn btn-lg btn-block btn-outline-primary" href="{% url 'catalog:versions' %}">Отмена</a>
 
                 </form>
             </div>
         </div>
     </div>
 </div>
+
 
 
 {% endblock %}
