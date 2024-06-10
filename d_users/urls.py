@@ -1,12 +1,14 @@
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
 
 from d_users.apps import DUsersConfig
-
+from d_users.views import UserCreateView
 
 app_name = DUsersConfig.name
 
 urlpatterns = [
-    path('login/', LoginView.as_view(template_name = "login.html")),
+    path('login/', LoginView.as_view(template_name = "login.html"), name='login'),
+    path('logout/',LogoutView.as_view(), name='logout'),
+    path('register/', UserCreateView.as_view(), name='register')
 
 ]
