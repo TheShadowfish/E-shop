@@ -17,7 +17,7 @@ class DogForm(StyleFormMixin, ModelForm):
     class Meta:
         model = Dog
         fields = "__all__"
-        exclude = ("count_views",)
+        exclude = ("count_views", "owner")
         # fields = ("name", "breed", "photo", "date_born",)
 
 

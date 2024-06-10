@@ -1,5 +1,7 @@
 from django.db import models
 
+from d_users.models import D_user
+
 NULLABLE = {"blank": True, "null": True}
 
 
@@ -47,6 +49,7 @@ class Dog(models.Model):
         help_text="Укажите количество просмотров",
         default=0,
     )
+    owner = models.ForeignKey(D_user, verbose_name='Владелец', help_text='Укажите владельца собаки', **NULLABLE, on_delete=models.SET_NULL)
 
     class Meta:
         verbose_name = "Собака"
