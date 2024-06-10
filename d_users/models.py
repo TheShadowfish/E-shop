@@ -11,6 +11,8 @@ class D_user(AbstractUser):
     tg_name = models.CharField(max_length=50, verbose_name='Ник телеграм', **NULLABLE, help_text='Введите ник телеграм')
     avatar = models.ImageField(upload_to='d_users/avatars', verbose_name='Аватар', **NULLABLE, help_text='Загрузите свой аватар')
 
+    token = models.CharField(max_length=100, verbose_name='Token', **NULLABLE)
+
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 

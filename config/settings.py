@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os.path
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -80,10 +81,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'dogs',
-        'USER': 'postgres',
+        'USER': config('DB_POSTRESQL_USER'),
         'HOST': '127.0.0.1',
         'PORT': 5432,
-        'PASSWORD': '12345'
+        'PASSWORD': config('DB_POSTRESQL_PASSWORD')
     }
 }
 
@@ -141,3 +142,14 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 AUTH_USER_MODEL = 'd_users.D_user'
 LOGIN_REDIRECT_URL ='/'
 LOGOUT_REDIRECT_URL = '/'
+
+
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = config('EMAIL_USER') + "@yandex.ru"
+EMAIL_HOST_PASSWORD = config('EMAIL_PASSWORD')
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+
+SERVER_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
