@@ -18,7 +18,11 @@
 
         <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:home_paginate_by_3' %}">Каталог (по 3 товара)</a>
 
+        {%if user.is_authenticated %}
+
         <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:create' %}">Создать продукт</a>
+
+        {% endif %}
 
         <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:contacts' %}">Контакты</a>
 
