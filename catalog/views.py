@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from datetime import datetime
 
@@ -42,21 +43,38 @@ class ProductDetailView(DetailView):
     model = Product
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy("catalog:home")
 
+    login_url = "users:login"
+    redirect_field_name = "login"
 
-class ProductUpdateView(UpdateView):
+    def form_valid(self, form):
+        product = form.save()
+        user = self.request.user
+        product.owner = user
+        product.save()
+
+        return super().form_valid(form)
+
+
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy("catalog:home")
 
+    login_url = "users:login"
+    redirect_field_name = "login"
 
-class ProductDeleteView(DeleteView):
+
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     success_url = reverse_lazy("catalog:home")
+
+    login_url = "users:login"
+    redirect_field_name = "login"
 
 
 class ContactsPageViews(CreateView):
@@ -116,18 +134,36 @@ class VersionDetailView(DetailView):
     model = Version
 
 
-class VersionCreateView(CreateView):
+class VersionCreateView(LoginRequiredMixin, CreateView):
     model = Version
     form_class = VersionForm
     success_url = reverse_lazy("catalog:versions")
 
+    login_url = "users:login"
+    redirect_field_name = "login"
 
-class VersionUpdateView(UpdateView):
+    def form_valid(self, form):
+        product = form.save()
+        user = self.request.user
+        product.owner = user
+        product.save()
+        return super().form_valid(form)
+
+
+class VersionUpdateView(LoginRequiredMixin, UpdateView):
     model = Version
     form_class = VersionForm
     success_url = reverse_lazy("catalog:versions")
 
+    login_url = "users:login"
+    redirect_field_name = "login"
 
-class VersionDeleteView(DeleteView):
+
+
+
+class VersionDeleteView(LoginRequiredMixin, DeleteView):
     model = Version
     success_url = reverse_lazy("catalog:versions")
+
+    login_url = "users:login"
+    redirect_field_name = "login"

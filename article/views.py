@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 
 from django.shortcuts import render, get_object_or_404
@@ -6,6 +7,8 @@ import os
 
 from django.urls import reverse_lazy, reverse
 from pytils.translit import slugify
+
+from article.forms import ArticleForm
 from article.functions.utils import send_email
 
 from article.models import Article
@@ -33,6 +36,7 @@ class ArticleListView(ListView):
 class ArticleDetailView(DetailView):
     model = Article
 
+
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
         self.object.views_count += 1
@@ -44,19 +48,17 @@ class ArticleDetailView(DetailView):
         return self.object
 
 
-class ArticleCreateView(CreateView):
+class ArticleCreateView(LoginRequiredMixin, CreateView):
 
     model = Article
-    fields = (
-        "name",
-        "body",
-        "image",
-        "created_at",
-        "is_published",
-        "views_count",
-    )
+
+    form_class = ArticleForm
 
     success_url = reverse_lazy("article:blog")
+
+
+    login_url = "users:login"
+    redirect_field_name = "login"
 
     def form_valid(self, form):
         if form.is_valid():
@@ -66,17 +68,14 @@ class ArticleCreateView(CreateView):
         return super().form_valid(form)
 
 
-class ArticleUpdateView(UpdateView):
+class ArticleUpdateView(LoginRequiredMixin, UpdateView):
     model = Article
-    fields = (
-        "name",
-        "body",
-        "image",
-        "created_at",
-        "is_published",
-        "views_count",
-    )
+    form_class = ArticleForm
+
     # success_url = reverse_lazy('article:blog')
+
+    login_url = "users:login"
+    redirect_field_name = "login"
 
     def form_valid(self, form):
         if form.is_valid():
@@ -89,9 +88,12 @@ class ArticleUpdateView(UpdateView):
         return reverse("article:article_detail", args=[self.kwargs.get("pk")])
 
 
-class ArticleDeleteView(DeleteView):
+class ArticleDeleteView(LoginRequiredMixin, DeleteView):
     model = Article
     success_url = reverse_lazy("article:blog")
+
+    login_url = "users:login"
+    redirect_field_name = "login"
 
 
 #
