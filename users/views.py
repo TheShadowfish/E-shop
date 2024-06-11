@@ -33,7 +33,7 @@ class RegisterView(CreateView):
             from_email=EMAIL_HOST_USER,
             recipient_list=[user.email]
         )
-        print(f'Отправлено {EMAIL_HOST_USER} to {recipient_list}')
+        print(f'Отправлено {EMAIL_HOST_USER} to {user.email}')
         return super().form_valid(form)
 
 def email_verification(request, token):
