@@ -142,6 +142,13 @@ class VersionCreateView(LoginRequiredMixin, CreateView):
     login_url = "users:login"
     redirect_field_name = "login"
 
+    def form_valid(self, form):
+        product = form.save()
+        user = self.request.user
+        product.owner = user
+        product.save()
+        return super().form_valid(form)
+
 
 class VersionUpdateView(LoginRequiredMixin, UpdateView):
     model = Version
@@ -150,6 +157,8 @@ class VersionUpdateView(LoginRequiredMixin, UpdateView):
 
     login_url = "users:login"
     redirect_field_name = "login"
+
+
 
 
 class VersionDeleteView(LoginRequiredMixin, DeleteView):

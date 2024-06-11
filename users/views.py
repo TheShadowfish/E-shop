@@ -104,5 +104,6 @@ def password_recovery(request):
 
         user.password = psw
         user.save()
+        return render(request, 'users/password_recovery.html', context)
 
-        return redirect(reverse('users:login'))
+        # return redirect(reverse('users:login'))
