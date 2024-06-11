@@ -48,7 +48,7 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     form_class = ProductForm
     success_url = reverse_lazy("catalog:home")
 
-    login_url = "/users/login.html"
+    login_url = "users:login"
     redirect_field_name = "login"
 
     def form_valid(self, form):
@@ -60,15 +60,21 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy("catalog:home")
 
+    login_url = "users:login"
+    redirect_field_name = "login"
 
-class ProductDeleteView(DeleteView):
+
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     success_url = reverse_lazy("catalog:home")
+
+    login_url = "users:login"
+    redirect_field_name = "login"
 
 
 class ContactsPageViews(CreateView):
@@ -128,18 +134,27 @@ class VersionDetailView(DetailView):
     model = Version
 
 
-class VersionCreateView(CreateView):
+class VersionCreateView(LoginRequiredMixin, CreateView):
     model = Version
     form_class = VersionForm
     success_url = reverse_lazy("catalog:versions")
 
+    login_url = "users:login"
+    redirect_field_name = "login"
 
-class VersionUpdateView(UpdateView):
+
+class VersionUpdateView(LoginRequiredMixin, UpdateView):
     model = Version
     form_class = VersionForm
     success_url = reverse_lazy("catalog:versions")
 
+    login_url = "users:login"
+    redirect_field_name = "login"
 
-class VersionDeleteView(DeleteView):
+
+class VersionDeleteView(LoginRequiredMixin, DeleteView):
     model = Version
     success_url = reverse_lazy("catalog:versions")
+
+    login_url = "users:login"
+    redirect_field_name = "login"
