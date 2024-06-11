@@ -27,6 +27,7 @@ class ProductForm(StyleFormMixin, forms.ModelForm):
         #     "created_at",
         #     "updated_at",
         # ) казино, криптовалюта, крипта, биржа, дешево, бесплатно, обман, полиция, радар
+        exclude = ('owner','created_at',)
 
     def clean(self):
         blacklist = ['казино', 'криптовалюта', 'крипта', 'биржа', 'дешево', 'бесплатно', 'обман', 'полиция', 'радар']

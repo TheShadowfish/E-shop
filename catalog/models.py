@@ -2,6 +2,8 @@ from django.db import models
 from datetime import datetime
 from django.utils import timezone
 
+from users.models import User
+
 NULLABLE = {"blank": True, "null": True}
 
 
@@ -74,13 +76,14 @@ class Product(models.Model):
     created_at = models.DateField(
         **NULLABLE,
         verbose_name="Дата создания",
-        help_text="Укажите дату создания",
+        help_text="Укажите дату создания", auto_now_add=True
     )
     updated_at = models.DateField(
         **NULLABLE,
         verbose_name="Дата изменения",
-        help_text="Укажите дату изменения",
+        help_text="Укажите дату изменения", auto_now=True
     )
+    owner = models.ForeignKey(User, verbose_name='Владелец', help_text='Укажите создателя продукта', **NULLABLE, on_delete=models.SET_NULL)
 
     class Meta:
         verbose_name = "Продукт"
@@ -141,7 +144,7 @@ class Contact(models.Model):
         **NULLABLE,
         verbose_name="Дата создания",
         help_text="Укажите дату создания",
-        default=timezone.now(),
+        auto_now_add=True,
     )
 
     class Meta:

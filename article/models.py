@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils import timezone
 
 NULLABLE = {"blank": True, "null": True}
 
@@ -35,7 +34,7 @@ class Article(models.Model):
         **NULLABLE,
         verbose_name="Дата создания",
         help_text="Укажите дату создания",
-        default=timezone.now()
+        auto_now_add=True,
     )
     is_published = models.BooleanField(
         verbose_name="Признак публикации",
