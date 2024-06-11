@@ -67,43 +67,43 @@ random
 make_password()
  (посмотреть в документации про эту функцию).
 """
-
-def password_recovery(request):
-
-    if request.method == 'POST':
-        email = request.POST.get('email')
-        password = ''
-
-        # надо проверить, существует ли пользователь с таким email
-        user = get_object_or_404(User, email=email)
-
-
-
-        # Создание двенадцатисимвольного буквенно-цифрового пароля, содержащего как минимум один символ нижнего регистра,
-        # как минимум один символ верхнего регистра и как минимум три цифры:
-        alphabet = string.ascii_letters + string.digits
-        while True:
-            password = ''.join(secrets.choice(alphabet) for i in range(12))
-            if (any(c.islower() for c in password)
-                    and any(c.isupper() for c in password)
-                    and sum(c.isdigit() for c in password) >= 3):
-                break
-
-        send_mail(
-            subject='Восстановление пароля',
-            message=f'Привет, держи новый сложный 12-ти символьный пароль, который ты тоже забудешь: {password} \n'
-            f'Если вы не запрашивали восстановление пароля, просто игнорируйте это сообщение.',
-            from_email=EMAIL_HOST_USER,
-            recipient_list=email
-        )
-
-
-
-        # пароль шифрует  - как его дальше в шифрованом виде в базу сохранять?
-        psw = make_password(password, salt=None, hasher='default')
-
-        user.password = psw
-        user.save()
-        return render(request, 'users/password_recovery.html', context)
-
-        # return redirect(reverse('users:login'))
+#
+# def password_recovery(request):
+#
+#     if request.method == 'POST':
+#         email = request.POST.get('email')
+#         password = ''
+#
+#         # надо проверить, существует ли пользователь с таким email
+#         user = get_object_or_404(User, email=email)
+#
+#
+#
+#         # Создание двенадцатисимвольного буквенно-цифрового пароля, содержащего как минимум один символ нижнего регистра,
+#         # как минимум один символ верхнего регистра и как минимум три цифры:
+#         alphabet = string.ascii_letters + string.digits
+#         while True:
+#             password = ''.join(secrets.choice(alphabet) for i in range(12))
+#             if (any(c.islower() for c in password)
+#                     and any(c.isupper() for c in password)
+#                     and sum(c.isdigit() for c in password) >= 3):
+#                 break
+#
+#         send_mail(
+#             subject='Восстановление пароля',
+#             message=f'Привет, держи новый сложный 12-ти символьный пароль, который ты тоже забудешь: {password} \n'
+#             f'Если вы не запрашивали восстановление пароля, просто игнорируйте это сообщение.',
+#             from_email=EMAIL_HOST_USER,
+#             recipient_list=email
+#         )
+#
+#
+#
+#         # пароль шифрует  - как его дальше в шифрованом виде в базу сохранять?
+#         psw = make_password(password, salt=None, hasher='default')
+#
+#         user.password = psw
+#         user.save()
+#         return render(request, 'users/password_recovery.html', context)
+#
+#         # return redirect(reverse('users:login'))

@@ -13,7 +13,7 @@ urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
     path('profile/', ProfileView.as_view(), name='profile'),
     path("email-confirm/<str:token>/", email_verification, name='email-confirm'),
-    path("password-recovery/", password_recovery, name='password_recovery'),
+
 
     path('password-reset/', PasswordResetView.as_view(template_name='users/password_reset.html',
                                                         email_template_name='users/password_reset_email.html',
@@ -25,3 +25,4 @@ urlpatterns = [
                                                                               success_url=reverse_lazy('users:login')), name='password_reset_confirm')
 
 ]
+# path("password-recovery/", password_recovery, name='password_recovery'),
