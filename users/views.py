@@ -26,12 +26,14 @@ class RegisterView(CreateView):
         user.save()
         host = self.request.get_host()
         url = f'http://{host}/users/email-confirm/{token}/'
+        print(url)
         send_mail(
             subject='Подтверждение почты',
             message=f'Привет, перейди по ссылке для подтверждения почты {url}',
             from_email=EMAIL_HOST_USER,
             recipient_list=[user.email]
         )
+        print(f'Отправлено {EMAIL_HOST_USER} to {recipient_list}')
         return super().form_valid(form)
 
 def email_verification(request, token):
