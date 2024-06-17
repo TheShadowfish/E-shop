@@ -13,18 +13,29 @@ from dogs.models import Dog, Parent
 class DogListView(ListView):
     model = Dog
 
-class DogDetailView(LoginRequiredMixin, DetailView):
+class DogDetailView(DetailView, LoginRequiredMixin):
     model = Dog
-    def qet_object(self, queryset=None):
+    def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
 
-        print(f"user=  {self.request.user}, d_user= {self.request.d_user}")
+        print(f"user=  {self.request.user}")
         user = self.request.user
         if user == self.object.owner:
             self.object.count_views += 1
             self.object.save()
             return self.object
-        raise HttpResponseForbidden
+        raise PermissionDenied #HttpResponseForbidden
+
+    # def get_object(self, queryset=None):
+    #     self.object = super().get_object(queryset)
+    #     self.object.views_count += 1
+    #     self.object.save()
+    #
+    #     if self.object.views_count == 100:
+    #         send_email(self.object)
+    #
+    #     return self.object
+
 
 class DogCreateView(LoginRequiredMixin, CreateView):
     model= Dog
