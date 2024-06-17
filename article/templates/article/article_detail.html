@@ -7,7 +7,7 @@
     <div class="col-6">
         <div class="card mb-3 box-shadow">
             <div class="card-header">
-                <h4 class="my-0 font-weight-normal">Изображение товара</h4>
+                <h4 class="my-0 font-weight-normal">Изображение</h4>
             </div>
             <div class="card-body">
                 <img src="{{object.image|media_filter}}" class="card-img-top" alt={{object.image|media_filter}}>
@@ -22,7 +22,7 @@
 
         <div class="card mb-3 box-shadow">
             <div class="card-header">
-                <h4 class="my-0 font-weight-normal">Описание товара</h4>
+                <h4 class="my-0 font-weight-normal">{{object.name}}</h4>
             </div>
 
 
@@ -31,29 +31,24 @@
                     <div style="color: orange"><b>{{object.name}}</b></div>
                 </h5>
                 <p class="card-text">
-                    {% if object.id == 1 %}
-                <div style="color: red">Осталось мало! Спешите!</div>
-                {% else %}
-                <span class="text-muted">*чем раньше купите - тем раньше доставим :) <br></span>
-                {% endif %}
 
-                <br>
-                <b>Наименование: </b>{{object.name}}
-                <br> <br>
-                <b>Описание: </b>{{object.body}}
-                <br> <br>
-                <b>Создано: </b>{{object.created_at}}
-                <br> <br>
-                <b>Опубликовано: </b>{{object.is_published}}
-                <br><br>
-                <small class="text-body-secondary">
 
-                    Просмотры: {{object.views_count}}
                     <br>
-                    Путь: {{object.slug}}
+                    <b>Наименование: </b>{{object.name}}
+                    <br> <br>
+
+                    <b>Создано: </b>{{object.created_at}}
+                    <br> <br>
+                    <b>Опубликовано: </b>{{object.is_published}}
+                    <br><br>
+                    <small class="text-body-secondary">
+
+                        Просмотры: {{object.views_count}}
+                        <br>
+                        Путь: {{object.slug}}
 
 
-                </small>
+                    </small>
 
 
                 </p>
@@ -66,7 +61,6 @@
                     <a class="btn btn-success" href="{% url 'article:blog' %}" role="button"> Вернуться на главную
                         страницу блога</a>
                     {% endif %}
-
 
 
                     {% if object.has_other_pages %}
@@ -104,4 +98,20 @@
 
 </div>
 
-{% endblock %}
+<div class="row text-right">
+    <div class="col-12">
+        <div class="card mb-3 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">Текст статьи</h4>
+            </div>
+            <div class="card-body">
+                <b>Описание: </b> {{object.body}}
+                    <br> <br>
+
+            </div>
+        </div>
+
+    </div>
+</div
+
+        {% endblock %}

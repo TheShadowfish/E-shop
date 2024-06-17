@@ -33,7 +33,6 @@ def time_until_11_nov():
     # return 'До распродажи 11.11 осталось: {} дней {} часа {} мин {} сек.'.format(d.days, hh, mm, ss)
 
 
-# Создание фильтра
 @register.filter(needs_autoescape=True)
 def initial_letter_filter(text, autoescape=True):
     first, other = text[0], text[1:]
@@ -43,8 +42,6 @@ def initial_letter_filter(text, autoescape=True):
         esc = lambda x: x
     result = "<strong>%s</strong>%s" % (esc(first), esc(other))
     return mark_safe(result)
-
-
 # Создание тега
 @register.simple_tag
 def generate_fake_mail(length: int = '10'):

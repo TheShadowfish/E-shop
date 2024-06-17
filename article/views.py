@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import render
 
 from django.shortcuts import render, get_object_or_404
@@ -48,11 +48,12 @@ class ArticleDetailView(DetailView):
         return self.object
 
 
-class ArticleCreateView(LoginRequiredMixin, CreateView):
+class ArticleCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
 
     model = Article
 
     form_class = ArticleForm
+    permission_required = 'article.add_article'
 
     success_url = reverse_lazy("article:blog")
 
@@ -68,9 +69,10 @@ class ArticleCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class ArticleUpdateView(LoginRequiredMixin, UpdateView):
+class ArticleUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Article
     form_class = ArticleForm
+    permission_required = 'article.update_article'
 
     # success_url = reverse_lazy('article:blog')
 
@@ -88,9 +90,10 @@ class ArticleUpdateView(LoginRequiredMixin, UpdateView):
         return reverse("article:article_detail", args=[self.kwargs.get("pk")])
 
 
-class ArticleDeleteView(LoginRequiredMixin, DeleteView):
+class ArticleDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Article
     success_url = reverse_lazy("article:blog")
+    permission_required = 'article.delete_article'
 
     login_url = "users:login"
     redirect_field_name = "login"
