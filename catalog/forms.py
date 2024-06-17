@@ -42,6 +42,31 @@ class ProductForm(StyleFormMixin, forms.ModelForm):
         else:
             return self.cleaned_data
 
+class ProductModeratorForm(StyleFormMixin, forms.ModelForm):
+    class Meta:
+        model = Product
+        # fields = '__all__'
+        fields = (
+            "is_published",
+            "description",
+            "category",
+        )
+        # exclude = ('owner','created_at',)
+
+    def clean(self):
+        blacklist = ['казино', 'криптовалюта', 'крипта', 'биржа', 'дешево', 'бесплатно', 'обман', 'полиция', 'радар']
+
+        cleaned_data = self.cleaned_data['description']
+
+        for b_word in blacklist:
+            if b_word in cleaned_data:
+                raise forms.ValidationError(
+                    'Нельзя использовать слова из списка запрещенных (казино, криптовалюта, крипта, биржа, дешево, бесплатно, обман, полиция, радар)')
+
+        else:
+            return self.cleaned_data
+
+
 
 class ContactForm(StyleFormMixin, forms.ModelForm):
     class Meta:
@@ -60,12 +85,7 @@ class VersionForm(StyleFormMixin, forms.ModelForm):
 
         """    product, number, name, sign """
 
-        """# Дополнительное задание
-В один момент может быть только одна активная версия продукта, поэтому при изменении версий необходимо проверять, 
-что пользователь в качестве активной версии указал только одну. 
-В случае возникновения ошибки вернуть сообщение пользователю и попросить выбрать только одну активную версию.
 
-Дополнительное задание, помеченное звездочкой, желательно, но не обязательно выполнять."""
     def clean(self):
 
 

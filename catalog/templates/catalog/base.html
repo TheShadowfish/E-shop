@@ -40,7 +40,14 @@
     <div style="color: red">{% time_until_11_nov %}</div>
 
     </p>
-    <label>{%  current_time '%Y-%m-%d' %} </label>
+    <label>Сегодня &nbsp;{%  current_time '%Y-%m-%d' %}  </label>
+
+     {% if user.is_authenticated %}
+     <label>, &nbsp; Добро пожаловать, пользователь <b>{{user.email}}</b>. </label>
+     {% else %}
+    <label>, &nbsp;Вы находитесь на сайте как <b>анонимный пользователь</b>. </label>
+     {% endif %}
+
 
 </div>
 

@@ -1,10 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
 from datetime import datetime
 
 from django.urls import reverse_lazy
 
-from catalog.forms import ProductForm, ContactForm, VersionForm
+from catalog.forms import ProductForm, ContactForm, VersionForm, ProductModeratorForm
 from catalog.models import Category, Product, Contact, Version
 
 from django.views.generic import (
@@ -67,6 +68,19 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
 
     login_url = "users:login"
     redirect_field_name = "login"
+
+    def get_form_class(self):
+        user = self.request.user
+        if user == self.object.owner:
+            return ProductForm
+        if user.has_perm("catalog.can_change_is_published_field") and user.has_perm("catalog.can_edit_description") and user.has_perm("catalog.can_edit_category"):
+            """            
+             
+            ("can_change_is_published_field","Can change sign of publication"),
+            ("can_edit_description", "Can edit description"),
+            ("can_edit_category", "Can edit category"),"""
+            return ProductModeratorForm
+        raise PermissionDenied
 
 
 class ProductDeleteView(LoginRequiredMixin, DeleteView):
