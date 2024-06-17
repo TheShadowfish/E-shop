@@ -46,12 +46,17 @@
                 <div class="btn-group">
                     <a class="btn btn-primary" href="{% url 'catalog:product_detail' object.pk%}" role="button">Посмотреть</a>
 
-
+                    {% if perms.catalog.change_product %}
                     <a class="btn btn-primary" href="{% url 'catalog:product_update' object.pk%}"
                        role="button">Изменить</a>
+                    {% endif %}
 
+                    {% if user.is_superuser %}
                     <a class="btn btn-primary" href="{% url 'catalog:product_delete' object.pk%}"
                        role="button">Удалить</a>
+
+                    {% endif %}
+
                 </div>
 
             </div>

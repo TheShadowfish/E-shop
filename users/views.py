@@ -3,6 +3,7 @@ import string
 
 from django.conf.global_settings import EMAIL_HOST_USER
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
@@ -42,7 +43,7 @@ def email_verification(request, token):
     user.save()
     return redirect(reverse('users:login'))
 
-class ProfileView(UpdateView):
+class ProfileView(LoginRequiredMixin, UpdateView):
     model = User
     form_class = UserProfileForm
     success_url = reverse_lazy('users:profile')
@@ -52,20 +53,6 @@ class ProfileView(UpdateView):
 
 
 """
-- Восстановление пароля зарегистрированного пользователя на автоматически сгенерированный пароль.
-Создайте новый контроллер для восстановления пароля.
-
-В интерфейсе кнопка «Восстановить пароль» должна отображаться на странице входа.
-
-Пользователь вводит адрес электронной почты, в контроллере происходит генерация пароля, перезапись пароля для пользователя с соответсвующим адресом электронной почты и отправка сообщения с новым паролем на адрес почты.
-
-Пароль можно сгенерировать с помощью библиотеки 
-random
-.
-
-Помните, что пароль в базе данных хранится в захешированном виде. Для установки пароля пользователю можно воспользоваться функцией 
-make_password()
- (посмотреть в документации про эту функцию).
 """
 
 def password_recovery(request):

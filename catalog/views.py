@@ -1,4 +1,5 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 from django.shortcuts import render
 from datetime import datetime
 
@@ -23,29 +24,30 @@ class GetContextMixin:
         return context_data
 
 
-class ProductListView(GetContextMixin, ListView):
+class ProductListView(LoginRequiredMixin, GetContextMixin, ListView):
     model = Product
 
 
-class Product2ListView(GetContextMixin, ListView):
+class Product2ListView(LoginRequiredMixin, GetContextMixin, ListView):
     model = Product
     paginate_by = 2
     # queryset = model.objects.all()  # Default: Model.objects.all()
 
 
-class Product3ListView(GetContextMixin, ListView):
+class Product3ListView(LoginRequiredMixin, GetContextMixin, ListView):
     model = Product
     paginate_by = 3
     # queryset = model.objects.all()  # Default: Model.objects.all()
 
 
-class ProductDetailView(DetailView):
+class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
 
 
-class ProductCreateView(LoginRequiredMixin, CreateView):
+class ProductCreateView(LoginRequiredMixin,  PermissionRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
+    permission_required = 'catalog.add_product'
     success_url = reverse_lazy("catalog:home")
 
     login_url = "users:login"
@@ -60,24 +62,28 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class ProductUpdateView(LoginRequiredMixin, UpdateView):
+class ProductUpdateView(LoginRequiredMixin, PermissionRequiredMixin,  UpdateView):
     model = Product
     form_class = ProductForm
+    permission_required = 'catalog.change_product'
     success_url = reverse_lazy("catalog:home")
 
     login_url = "users:login"
     redirect_field_name = "login"
 
 
-class ProductDeleteView(LoginRequiredMixin, DeleteView):
+class ProductDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Product
     success_url = reverse_lazy("catalog:home")
 
     login_url = "users:login"
     redirect_field_name = "login"
 
+    def test_func(self):
+        return self.request.user.is_superuser
 
-class ContactsPageViews(CreateView):
+
+class ContactsPageViews(LoginRequiredMixin, CreateView):
     model = Contact
     form_class = ContactForm
     # fields = (
@@ -99,7 +105,8 @@ class ContactsPageViews(CreateView):
 
         return context
 
-
+@login_required
+@permission_required('catalog.view_contacts')
 def contacts(request):
     number = len(Contact.objects.all())
     if number > 5:
@@ -126,11 +133,11 @@ def contacts(request):
     return render(request, "catalog/contacts.html", context)
 
 
-class VersionListView(ListView):
+class VersionListView(LoginRequiredMixin, ListView):
     model = Version
 
 
-class VersionDetailView(DetailView):
+class VersionDetailView(LoginRequiredMixin, DetailView):
     model = Version
 
 

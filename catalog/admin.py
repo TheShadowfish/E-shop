@@ -31,5 +31,5 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ("id", "name")
 
 @admin.register(Contact)
-class CategoryAdmin(admin.ModelAdmin):
+class ContactAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "phone", "message", "time")
