@@ -12,8 +12,10 @@ from catalog.views import (
     Product3ListView,
     ContactsPageViews,
     VersionListView,
-    VersionDetailView, VersionCreateView, VersionUpdateView, VersionDeleteView,
-
+    VersionDetailView,
+    VersionCreateView,
+    VersionUpdateView,
+    VersionDeleteView,
 )
 
 app_name = CatalogConfig.name
@@ -25,13 +27,19 @@ urlpatterns = [
     path("home/paginate_by_2/", Product2ListView.as_view(), name="home_paginate_by_2"),
     path("home/paginate_by_3/", Product3ListView.as_view(), name="home_paginate_by_3"),
     path("create/", ProductCreateView.as_view(), name="create"),
-    path("product/<int:pk>/update/", ProductUpdateView.as_view(), name="product_update"),
-    path("product/<int:pk>/delete/", ProductDeleteView.as_view(), name="product_delete"),
+    path(
+        "product/<int:pk>/update/", ProductUpdateView.as_view(), name="product_update"
+    ),
+    path(
+        "product/<int:pk>/delete/", ProductDeleteView.as_view(), name="product_delete"
+    ),
     path("versions/", VersionListView.as_view(), name="versions"),
     path("versions/<int:pk>/", VersionDetailView.as_view(), name="version_detail"),
     path("version_create/", VersionCreateView.as_view(), name="version_create"),
-    path("version/<int:pk>/update/", VersionUpdateView.as_view(), name = "version_update"),
-
-    path("version/<int:pk>/delete/", VersionDeleteView.as_view(), name="version_delete"),
-
+    path(
+        "version/<int:pk>/update/", VersionUpdateView.as_view(), name="version_update"
+    ),
+    path(
+        "version/<int:pk>/delete/", VersionDeleteView.as_view(), name="version_delete"
+    ),
 ]

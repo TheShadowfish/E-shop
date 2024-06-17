@@ -28,7 +28,7 @@ class Article(models.Model):
         upload_to="blog/photo",
         verbose_name="Превью",
         help_text="Загрузите превью статьи",
-        **NULLABLE
+        **NULLABLE,
     )
     created_at = models.DateField(
         **NULLABLE,

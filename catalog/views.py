@@ -1,10 +1,12 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
 from datetime import datetime
 
 from django.urls import reverse_lazy
 
-from catalog.forms import ProductForm, ContactForm, VersionForm
+from catalog.forms import ProductForm, ContactForm, VersionForm, ProductModeratorForm
 from catalog.models import Category, Product, Contact, Version
 
 from django.views.generic import (
@@ -19,7 +21,7 @@ from django.views.generic import (
 class GetContextMixin:
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
-        context_data['version'] = Version.objects.all()
+        context_data["version"] = Version.objects.all()
         return context_data
 
 
@@ -68,6 +70,18 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     login_url = "users:login"
     redirect_field_name = "login"
 
+    def get_form_class(self):
+        user = self.request.user
+        if user == self.object.owner:
+            return ProductForm
+        if (
+            user.has_perm("catalog.can_change_is_published_field")
+            and user.has_perm("catalog.can_edit_description")
+            and user.has_perm("catalog.can_edit_category")
+        ):
+            return ProductModeratorForm
+        raise PermissionDenied
+
 
 class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
@@ -93,17 +107,18 @@ class ContactsPageViews(CreateView):
 
         number = len(Contact.objects.all())
         if number > 5:
-            context["latest_contacts"] = Contact.objects.all()[number - 5: number + 1]
+            context["latest_contacts"] = Contact.objects.all()[number - 5 : number + 1]
         else:
             context["latest_contacts"] = Contact.objects.all()
 
         return context
 
 
+@login_required
 def contacts(request):
     number = len(Contact.objects.all())
     if number > 5:
-        contacts_list = Contact.objects.all()[number - 5: number + 1]
+        contacts_list = Contact.objects.all()[number - 5 : number + 1]
     else:
         contacts_list = Contact.objects.all()
 
@@ -149,7 +164,6 @@ class VersionCreateView(LoginRequiredMixin, CreateView):
         product.save()
         return super().form_valid(form)
 
-
 class VersionUpdateView(LoginRequiredMixin, UpdateView):
     model = Version
     form_class = VersionForm
@@ -157,8 +171,12 @@ class VersionUpdateView(LoginRequiredMixin, UpdateView):
 
     login_url = "users:login"
     redirect_field_name = "login"
-
-
+    def get_form_class(self):
+        user = self.request.user
+        version = self.version
+        if user == version.product.owner:
+            return ProductForm
+        raise PermissionDenied
 
 
 class VersionDeleteView(LoginRequiredMixin, DeleteView):
@@ -167,3 +185,9 @@ class VersionDeleteView(LoginRequiredMixin, DeleteView):
 
     login_url = "users:login"
     redirect_field_name = "login"
+    def get_form_class(self):
+        user = self.request.user
+        version = self.version
+        if user == version.product.owner:
+            return ProductForm
+        raise PermissionDenied
