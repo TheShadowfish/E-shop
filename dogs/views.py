@@ -1,25 +1,32 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.forms import inlineformset_factory
+from django.http import HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from dogs.forms import DogForm, ParentForm
+from dogs.forms import DogForm, ParentForm, DogModeratorForm
 from dogs.models import Dog, Parent
 
 
 class DogListView(ListView):
     model = Dog
 
-class DogDetailView(DetailView):
+class DogDetailView(LoginRequiredMixin, DetailView):
     model = Dog
-    def qet_object(self, queryset = None):
+    def qet_object(self, queryset=None):
         self.object = super().get_object(queryset)
-        self.object.count_views += 1
-        self.object.save()
-        return self.object
 
-class DogCreateView(CreateView, LoginRequiredMixin):
+        print(f"user=  {self.request.user}, d_user= {self.request.d_user}")
+        user = self.request.user
+        if user == self.object.owner:
+            self.object.count_views += 1
+            self.object.save()
+            return self.object
+        raise HttpResponseForbidden
+
+class DogCreateView(LoginRequiredMixin, CreateView):
     model= Dog
     form_class = DogForm
     success_url = reverse_lazy('dogs:dogs_list')
@@ -34,7 +41,7 @@ class DogCreateView(CreateView, LoginRequiredMixin):
 
 
 
-class DogUpdateView(UpdateView):
+class DogUpdateView(LoginRequiredMixin, UpdateView):
     model = Dog
     form_class = DogForm
     success_url = reverse_lazy('dogs:dogs_list')
@@ -61,6 +68,14 @@ class DogUpdateView(UpdateView):
             return super().form_valid(form)
         else:
             return  self.render_to_responce(self.get_context_data(form=form,formset=formset))
+
+    def get_form_class(self):
+        user = self.request.user
+        if user == self.object.owner:
+            return DogForm
+        if user.has_perm("dogs.can_edit_breed") and user.has_perm("dogs.can_edit_description"):
+            return DogModeratorForm
+        raise PermissionDenied
 
 
 class DogDeleteView(DeleteView):

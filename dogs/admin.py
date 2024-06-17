@@ -4,7 +4,7 @@ from dogs.models import Dog, Breed, Parent
 
 @admin.register(Dog)
 class DogAdmin(admin.ModelAdmin):
-    list_display = ("id", "name", "breed")
+    list_display = ("id", "name", "breed", "count_views", "owner")
     list_filter = ("breed",)
     search_fields = ("name",)
 

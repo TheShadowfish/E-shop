@@ -35,6 +35,11 @@ class Dog(models.Model):
         **NULLABLE,
         related_name="dogs"
     )
+    description = models.TextField(
+        verbose_name="Описание собаки",
+        help_text="Введите описание собаки",
+        **NULLABLE
+    )
     photo = models.ImageField(
         upload_to="dogs/photo",
         verbose_name="Фото",
@@ -55,6 +60,11 @@ class Dog(models.Model):
         verbose_name = "Собака"
         verbose_name_plural = "Собаки"
         ordering = ["breed", "name"]
+        permissions=[
+            ("can_edit_breed", "Can edit breed"),
+            ("can_edit_description", "Can edit description"),
+
+        ]
 
     def __str__(self):
         return self.name
