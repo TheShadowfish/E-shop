@@ -29,7 +29,7 @@ def time_until_11_nov():
     mm, ss = divmod(d.seconds, 60)
     hh, mm = divmod(mm, 60)
 
-    return 'До распродажи 11.11 осталось: {} дней'.format(d.days)
+    return "До распродажи 11.11 осталось: {} дней".format(d.days)
     # return 'До распродажи 11.11 осталось: {} дней {} часа {} мин {} сек.'.format(d.days, hh, mm, ss)
 
 
@@ -42,15 +42,17 @@ def initial_letter_filter(text, autoescape=True):
         esc = lambda x: x
     result = "<strong>%s</strong>%s" % (esc(first), esc(other))
     return mark_safe(result)
+
+
 # Создание тега
 @register.simple_tag
-def generate_fake_mail(length: int = '10'):
+def generate_fake_mail(length: int = "10"):
     # length = int(s_length)
     letters = string.ascii_letters + string.digits  # + string.punctuation
-    mail = ''.join(random.choice(letters) for _ in range(length))
+    mail = "".join(random.choice(letters) for _ in range(length))
 
     letters2 = string.ascii_lowercase
-    mail2 = ''.join(random.choice(letters2) for _ in range(length // 2))
+    mail2 = "".join(random.choice(letters2) for _ in range(length // 2))
     return f"{mail}@{mail2}.com"
 
 
@@ -61,15 +63,12 @@ def last_five_contacts(query_set):
     if number <= 5:
         return query_set
     else:
-        return query_set[number - 5: number + 1]
+        return query_set[number - 5 : number + 1]
 
 
 @register.filter()
 def media_filter(path):
     if path:
-        return f'/media/{path}'
+        return f"/media/{path}"
 
-    return '/static/image/no_image.png'
-
-
-
+    return "/static/image/no_image.png"

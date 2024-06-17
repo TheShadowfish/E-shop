@@ -76,14 +76,22 @@ class Product(models.Model):
     created_at = models.DateField(
         **NULLABLE,
         verbose_name="Дата создания",
-        help_text="Укажите дату создания", auto_now_add=True
+        help_text="Укажите дату создания",
+        auto_now_add=True,
     )
     updated_at = models.DateField(
         **NULLABLE,
         verbose_name="Дата изменения",
-        help_text="Укажите дату изменения", auto_now=True
+        help_text="Укажите дату изменения",
+        auto_now=True,
     )
-    owner = models.ForeignKey(User, verbose_name='Владелец', help_text='Укажите создателя продукта', **NULLABLE, on_delete=models.SET_NULL)
+    owner = models.ForeignKey(
+        User,
+        verbose_name="Владелец",
+        help_text="Укажите создателя продукта",
+        **NULLABLE,
+        on_delete=models.SET_NULL,
+    )
 
     is_published = models.BooleanField(
         verbose_name="Признак публикации",
@@ -96,21 +104,19 @@ class Product(models.Model):
         verbose_name_plural = "Продукты"
         ordering = ["category", "name"]
         permissions = [
-            ("can_change_is_published_field","Can change sign of publication"),
+            ("can_change_is_published_field", "Can change sign of publication"),
             ("can_edit_description", "Can edit description"),
             ("can_edit_category", "Can edit category"),
-
         ]
 
     def __str__(self):
         return self.name
 
 
-
-
 class Version(models.Model):
 
-    product = models.ForeignKey(Product,
+    product = models.ForeignKey(
+        Product,
         on_delete=models.CASCADE,
         verbose_name="продукт",
         help_text="название продукта",
@@ -125,9 +131,7 @@ class Version(models.Model):
         verbose_name="Название версии",
         help_text="Введите название версии",
     )
-    sign = models.BooleanField(
-        verbose_name="Признак текущей версии")
-
+    sign = models.BooleanField(verbose_name="Признак текущей версии")
 
     class Meta:
         verbose_name = "Версия"
@@ -165,4 +169,3 @@ class Contact(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.phone}"
-

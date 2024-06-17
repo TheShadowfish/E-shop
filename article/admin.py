@@ -1,10 +1,12 @@
 from django.contrib import admin
 from article.models import Article
 
+
 # Register your models here.
 @admin.register(Article)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = fields = ("id",
+    list_display = fields = (
+        "id",
         "name",
         "slug",
         "body",

@@ -19,6 +19,7 @@
                         <th scope="col">Номер версии</th>
                         <th scope="col">Название</th>
                         <th scope="col">Продукт</th>
+                        <th score="col">Добавил</th>
                         <th scope="col">Актуальность</th>
                         <th scope="col">info btn</th>
                         <th scope="col">change btn</th>
@@ -36,14 +37,24 @@
                         <td>{{ object.number }}</td>
                         <td>{{ object.name }}</td>
                         <td>{{ object.product}}</td>
+                        <td>{{ object.product.owner}}</td>
                         <td>{{ object.sign }}</td>
                         <td><a class="btn btn-primary" href="{% url 'catalog:version_detail' object.pk%}"
                                role="button">Посмотреть</a></td>
+
+                        {% if user == object.product.owner %}
 
                         <td><a class="btn btn-primary" href="{% url 'catalog:version_update' object.pk%}" role="button">Изменить</a>
                         </td>
                         <td><a class="btn btn-primary" href="{% url 'catalog:version_delete' object.pk%}" role="button">Удалить</a>
                         </td>
+
+                        {% else %}
+                        <td><a class="btn btn-secondary" disabled>Изменить</a>
+                        </td>
+                        <td><a class="btn btn-secondary" disabled>Удалить</a>
+                        </td>
+                        {%endif%}
 
                     </tr>
                     {% endfor %}

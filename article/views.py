@@ -18,7 +18,7 @@ from django.views.generic import (
     DetailView,
     CreateView,
     UpdateView,
-    DeleteView
+    DeleteView,
 )
 
 
@@ -36,7 +36,6 @@ class ArticleListView(ListView):
 class ArticleDetailView(DetailView):
     model = Article
 
-
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
         self.object.views_count += 1
@@ -53,10 +52,9 @@ class ArticleCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView)
     model = Article
 
     form_class = ArticleForm
-    permission_required = 'article.add_article'
+    permission_required = "article.add_article"
 
     success_url = reverse_lazy("article:blog")
-
 
     login_url = "users:login"
     redirect_field_name = "login"
@@ -72,7 +70,7 @@ class ArticleCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView)
 class ArticleUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Article
     form_class = ArticleForm
-    permission_required = 'article.update_article'
+    permission_required = "article.update_article"
 
     # success_url = reverse_lazy('article:blog')
 
@@ -93,8 +91,7 @@ class ArticleUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView)
 class ArticleDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Article
     success_url = reverse_lazy("article:blog")
-    permission_required = 'article.delete_article'
+    permission_required = "article.delete_article"
 
     login_url = "users:login"
     redirect_field_name = "login"
-
