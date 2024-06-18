@@ -105,8 +105,8 @@ class ContactForm(StyleFormMixin, forms.ModelForm):
 
 class VersionForm(StyleFormMixin, forms.ModelForm):
 
-    def init(self, user, *args, **kwargs):
-        super().init(*args, **kwargs)
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.fields['product'].queryset = Product.objects.filter(owner=user)
 
     class Meta:
