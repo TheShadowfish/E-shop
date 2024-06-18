@@ -104,11 +104,14 @@ class ContactForm(StyleFormMixin, forms.ModelForm):
 
 
 class VersionForm(StyleFormMixin, forms.ModelForm):
+
+    def init(self, user, *args, **kwargs):
+        super().init(*args, **kwargs)
+        self.fields['product'].queryset = Product.objects.filter(owner=user)
+
     class Meta:
         model = Version
         fields = "__all__"
-
-        # widgets = {'product': forms.Select(attrs={'version.product.owner': user})}
 
         """    product, number, name, sign """
 

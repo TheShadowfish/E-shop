@@ -75,9 +75,9 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
         if user == self.object.owner:
             return ProductForm
         if (
-            user.has_perm("catalog.can_change_is_published_field")
-            and user.has_perm("catalog.can_edit_description")
-            and user.has_perm("catalog.can_edit_category")
+                user.has_perm("catalog.can_change_is_published_field")
+                and user.has_perm("catalog.can_edit_description")
+                and user.has_perm("catalog.can_edit_category")
         ):
             return ProductModeratorForm
         raise PermissionDenied
@@ -107,7 +107,7 @@ class ContactsPageViews(CreateView):
 
         number = len(Contact.objects.all())
         if number > 5:
-            context["latest_contacts"] = Contact.objects.all()[number - 5 : number + 1]
+            context["latest_contacts"] = Contact.objects.all()[number - 5: number + 1]
         else:
             context["latest_contacts"] = Contact.objects.all()
 
@@ -118,7 +118,7 @@ class ContactsPageViews(CreateView):
 def contacts(request):
     number = len(Contact.objects.all())
     if number > 5:
-        contacts_list = Contact.objects.all()[number - 5 : number + 1]
+        contacts_list = Contact.objects.all()[number - 5: number + 1]
     else:
         contacts_list = Contact.objects.all()
 
@@ -164,6 +164,12 @@ class VersionCreateView(LoginRequiredMixin, CreateView):
         product.save()
         return super().form_valid(form)
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+
 class VersionUpdateView(LoginRequiredMixin, UpdateView):
     model = Version
     form_class = VersionForm
@@ -171,6 +177,7 @@ class VersionUpdateView(LoginRequiredMixin, UpdateView):
 
     login_url = "users:login"
     redirect_field_name = "login"
+
     def get_form_class(self):
         user = self.request.user
         version = self.version
@@ -185,6 +192,7 @@ class VersionDeleteView(LoginRequiredMixin, DeleteView):
 
     login_url = "users:login"
     redirect_field_name = "login"
+
     def get_form_class(self):
         user = self.request.user
         version = self.version
