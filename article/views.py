@@ -70,7 +70,7 @@ class ArticleCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView)
 class ArticleUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Article
     form_class = ArticleForm
-    permission_required = "article.update_article"
+    permission_required = "article.change_article"
 
     # success_url = reverse_lazy('article:blog')
 
