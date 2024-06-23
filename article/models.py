@@ -14,8 +14,8 @@ class Article(models.Model):
     количество просмотров.
     """
 
-    name = models.CharField(
-        max_length=100, verbose_name="Заголовок", help_text="Введите заголовок статьи"
+    name = models.SlugField(
+        max_length=100, verbose_name="url", help_text="Введите url статьи"
     )
     slug = models.CharField(
         max_length=150, verbose_name="slug", help_text="slug", **NULLABLE
