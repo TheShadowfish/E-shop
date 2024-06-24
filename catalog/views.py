@@ -25,14 +25,6 @@ from config import settings
 class GetContextMixin:
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
-        # if settings.CACHE_ENABLED:
-        #     key = f'version_list'
-        #     version_list = cache.get(key)
-        #     if version_list is None:
-        #         version_list  = Version.objects.all()
-        #         cache.set(key, version_list)
-        # else:
-        #     version_list = Version.objects.all()
 
         context_data["version"] = get_cached_versions_for_products()
         context_data['category_list'] = get_cached_category()
@@ -43,6 +35,7 @@ class GetContextMixin:
 
 class ProductListView(ListView):
     model = Product
+
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
 
@@ -51,6 +44,7 @@ class ProductListView(ListView):
         context_data["object_list"] = get_cached_products()
         context_data['category_list'] = get_cached_category()
         return context_data
+
 
 class ProductListViewCategory(GetContextMixin, ListView):
     model = Product
@@ -65,9 +59,8 @@ class ProductListViewCategory(GetContextMixin, ListView):
         context_data["version"] = get_cached_versions_for_products()
         # пагинация с этим не работает, а так кешируется конечно
         # context_data["object_list"] = get_cached_products()
-        context_data['category_list'] = [self.category,]
+        context_data['category_list'] = [self.category, ]
         return context_data
-
 
 
 class Product2ListView(GetContextMixin, ListView):
@@ -105,6 +98,7 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
         user = self.request.user
         product.owner = user
         product.save()
+        get_cached_products(recached=True)
 
         return super().form_valid(form)
 
@@ -129,6 +123,11 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
             return ProductModeratorForm
         raise PermissionDenied
 
+    def form_valid(self, form):
+
+        get_cached_products(recached=True)
+        return super().form_valid(form)
+
 
 class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
@@ -136,6 +135,10 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
 
     login_url = "users:login"
     redirect_field_name = "login"
+
+    def form_valid(self, form):
+        get_cached_products(recached=True)
+        return super().form_valid(form)
 
 
 class ContactsPageViews(CreateView):
@@ -191,6 +194,7 @@ def contacts(request):
 class VersionListView(ListView):
     model = Version
 
+
 class CategoryListView(ListView):
     model = Category
 
@@ -199,7 +203,6 @@ class CategoryListView(ListView):
         # context['mailing_list'] = Mailing.objects.all()
         context['category_list'] = get_cached_category()
         return context
-
 
 
 class VersionDetailView(DetailView):
@@ -219,6 +222,7 @@ class VersionCreateView(LoginRequiredMixin, CreateView):
         user = self.request.user
         product.owner = user
         product.save()
+        get_cached_versions_for_products(recached=True)
         return super().form_valid(form)
 
     def get_form_kwargs(self):
@@ -242,6 +246,10 @@ class VersionUpdateView(LoginRequiredMixin, UpdateView):
             return ProductForm
         raise PermissionDenied
 
+    def form_valid(self, form):
+        get_cached_versions_for_products(recached=True)
+        return super().form_valid(form)
+
 
 class VersionDeleteView(LoginRequiredMixin, DeleteView):
     model = Version
@@ -256,3 +264,7 @@ class VersionDeleteView(LoginRequiredMixin, DeleteView):
         if user == version.product.owner:
             return ProductForm
         raise PermissionDenied
+
+    def form_valid(self, form):
+        get_cached_versions_for_products(recached=True)
+        return super().form_valid(form)

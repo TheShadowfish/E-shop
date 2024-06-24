@@ -5,7 +5,7 @@ from catalog.forms import StyleFormMixin
 from users.models import User
 
 
-class UserRegisterFoerm(StyleFormMixin, UserCreationForm):
+class UserRegisterForm(StyleFormMixin, UserCreationForm):
     class Meta:
         model = User
         fields = (
