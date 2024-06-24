@@ -18,22 +18,23 @@ from django.views.generic import (
     DeleteView,
 )
 
+from catalog.services import get_cashed_versions_for_products
 from config import settings
 
 
 class GetContextMixin:
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
-        if settings.CACHE_ENABLED:
-            key = f'version_list'
-            version_list = cache.get(key)
-            if version_list is None:
-                version_list  = Version.objects.all()
-                cache.set(key, version_list)
-        else:
-            version_list = Version.objects.all()
+        # if settings.CACHE_ENABLED:
+        #     key = f'version_list'
+        #     version_list = cache.get(key)
+        #     if version_list is None:
+        #         version_list  = Version.objects.all()
+        #         cache.set(key, version_list)
+        # else:
+        #     version_list = Version.objects.all()
 
-        context_data["version"] = version_list
+        context_data["version"] = get_cashed_versions_for_products()
         return context_data
 
 
