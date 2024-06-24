@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.cache import cache
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
 from datetime import datetime
@@ -17,11 +18,22 @@ from django.views.generic import (
     DeleteView,
 )
 
+from config import settings
+
 
 class GetContextMixin:
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
-        context_data["version"] = Version.objects.all()
+        if settings.CACHE_ENABLED:
+            key = f'version_list'
+            version_list = cache.get(key)
+            if version_list is None:
+                version_list  = Version.objects.all()
+                cache.set(key, version_list)
+        else:
+            version_list = Version.objects.all()
+
+        context_data["version"] = version_list
         return context_data
 
 

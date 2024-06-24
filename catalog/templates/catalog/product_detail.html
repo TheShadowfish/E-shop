@@ -16,9 +16,12 @@
         </div>
         <div class="card mb-3 box-shadow">
             <div class="card-header">
-                <h4 class="my-0 font-weight-normal">Истрия версий товара</h4>
+                <h4 class="my-0 font-weight-normal">История версий товара</h4>
             </div>
             <div class="card-body">
+
+
+
                 {% for v in version%}
                 {% if v.product == object  and v.sign == True %}
 
