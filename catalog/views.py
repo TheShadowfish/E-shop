@@ -41,7 +41,7 @@ class Product3ListView(GetContextMixin, ListView):
     # queryset = model.objects.all()  # Default: Model.objects.all()
 
 
-class ProductDetailView(DetailView):
+class ProductDetailView(GetContextMixin, DetailView):
     model = Product
 
 
