@@ -14,8 +14,44 @@
 
             </div>
         </div>
+        <div class="card mb-3 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">История версий товара</h4>
+            </div>
+            <div class="card-body">
+
+
+
+                {% for v in version%}
+                {% if v.product == object  and v.sign == True %}
+
+                <p class="card-text">
+                 <div style="color: orange"><li><b>Текущая версия товара:</b>&nbsp;&nbsp; #{{v.number}} - {{v.name}}</li></div>
+
+                </p>
+                {% endif %}
+                {% endfor %}
+
+
+                {% for v in version %}
+                {% if v.product == object and v.sign == False %}
+
+                <p class="card-text">
+                <li><b>Версия товара:</b>&nbsp;&nbsp;    #{{v.number}} - {{v.name}}</li>
+
+                </p>
+                {% endif %}
+                {% endfor %}
+
+
+            </div>
+        </div>
 
     </div>
+
+
+
+
 
 
     <div class="col-6">
@@ -42,7 +78,21 @@
                 <br> <br>
                 <b>Описание: </b>{{object.description}}
                 <br> <br>
+
+                {% comment "доступ теперь через кеш категорий (см ниже) %}
                 <b>Категория: </b>{{object.category}}
+                <br> <br>
+                {%endcomment%}
+
+                <b>Категория: </b>
+                {%for category in category_list%}
+                {% if object.category_id == category.id %}
+                {{category.name}}
+                <br>
+                <b> Описание категории: </b> {{category.description}}
+
+                {%endif%}
+                {%endfor%}
                 <br> <br>
                 <b>Цена: </b>{{object.price}}
                 <br><br>

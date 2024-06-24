@@ -1,15 +1,16 @@
 import secrets
-import string
-
-from django.conf.global_settings import EMAIL_HOST_USER
-from django.contrib.auth.hashers import make_password
-from django.core.mail import send_mail
+# import string
+#
+# from django.conf.global_settings import EMAIL_HOST_USER
+# from django.contrib.auth.hashers import make_password
+# from django.core.mail import send_mail
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, UpdateView
 
 from users.forms import UserRegisterFoerm, UserProfileForm
 from users.models import User
+from users.services import send_email_confirmation, send_email_password, generate_password
 
 
 class RegisterView(CreateView):
@@ -27,12 +28,14 @@ class RegisterView(CreateView):
         host = self.request.get_host()
         url = f"http://{host}/users/email-confirm/{token}/"
         # print(url)
-        send_mail(
-            subject="Подтверждение почты",
-            message=f"Привет, перейди по ссылке для подтверждения почты {url}",
-            from_email=EMAIL_HOST_USER,
-            recipient_list=[user.email],
-        )
+        send_email_confirmation(url, user.email)
+
+        # send_mail(
+        #     subject="Подтверждение почты",
+        #     message=f"Привет, перейди по ссылке для подтверждения почты {url}",
+        #     from_email=EMAIL_HOST_USER,
+        #     recipient_list=[user.email],
+        # )
         # print(f'Отправлено {EMAIL_HOST_USER} to {user.email}')
         return super().form_valid(form)
 
@@ -86,34 +89,38 @@ def password_recovery(request):
 
         # Создание двенадцатисимвольного буквенно-цифрового пароля, содержащего как минимум один символ нижнего регистра,
         # как минимум один символ верхнего регистра и как минимум три цифры:
-        alphabet = string.ascii_letters + string.digits
-        while True:
-            password = "".join(secrets.choice(alphabet) for i in range(12))
-            if (
-                any(c.islower() for c in password)
-                and any(c.isupper() for c in password)
-                and sum(c.isdigit() for c in password) >= 3
-            ):
-                break
-
-        print(f"Пароль {password}")
-
-        message = f"Привет, держи новый сложный 12-ти символьный пароль, который ты тоже забудешь: {password}. \
-                    Если вы не запрашивали восстановление пароля, просто игнорируйте это сообщение."
-
-        print(f"Пароль {message}")
-
-        send_mail(
-            subject="Восстановление пароля",
-            message=message,
-            from_email=EMAIL_HOST_USER,
-            recipient_list=[email],
-        )
+        # alphabet = string.ascii_letters + string.digits
+        # while True:
+        #     password = "".join(secrets.choice(alphabet) for i in range(12))
+        #     if (
+        #         any(c.islower() for c in password)
+        #         and any(c.isupper() for c in password)
+        #         and sum(c.isdigit() for c in password) >= 3
+        #     ):
+        #         break
+        #
+        # print(f"Пароль {password}")
+        #
+        # message = f"Привет, держи новый сложный 12-ти символьный пароль, который ты тоже забудешь: {password}. \
+        #             Если вы не запрашивали восстановление пароля, просто игнорируйте это сообщение."
+        #
+        # print(f"Пароль {message}")
+        #
+        # send_mail(
+        #     subject="Восстановление пароля",
+        #     message=message,
+        #     from_email=EMAIL_HOST_USER,
+        #     recipient_list=[email],
+        # )
         # пароль шифрует  - как его дальше в шифрованом виде в базу сохранять?
         # psw = make_password(password, salt=None, hasher='default')
+        new_password = generate_password()
 
-        user.set_password(password)
+        user.set_password(new_password)
         user.save()
+
+        send_email_password(email, new_password)
+
         return redirect(reverse("users:login"))
 
     return render(request, "users/password_recovery.html")

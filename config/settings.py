@@ -21,10 +21,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-hi68bwhst#dxz)^k4twhd%($@%)7$_@q3o0lwasg6^hoy&42q4"
+SECRET_KEY = config('SECRET_KEY') #"django-insecure-hi68bwhst#dxz)^k4twhd%($@%)7$_@q3o0lwasg6^hoy&42q4"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG') == 'True'
 
 ALLOWED_HOSTS = []
 
@@ -52,6 +52,14 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+# Чтобы кешировать весь сайт
+# MIDDLEWARE = [
+#     'django.middleware.cache.UpdateCacheMiddleware',
+#     'django.middleware.common.CommonMiddleware',
+#     'django.middleware.cache.FetchFromCacheMiddleware',
+# ]
+# не забыть в .env CACHE_ENABLED=False установить после этого
 
 ROOT_URLCONF = "config.urls"
 
@@ -151,3 +159,16 @@ EMAIL_USE_SSL = True
 
 SERVER_EMAIL = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+CACHE_ENABLED = config('CACHE_ENABLED') == 'True'
+
+if CACHE_ENABLED:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": config('LOCATION'),
+            "TIMEOUT": 200  # Ручная регулировка времени жизни кеша в секундах, по умолчанию 300
+        }
+    }
+
+# redis://username:password@127.0.0.1:6379 - если закрыт авторизацией

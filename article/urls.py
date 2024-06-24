@@ -1,4 +1,6 @@
 from django.urls import path
+from django.views.decorators.cache import cache_page
+
 from article.apps import ArticleConfig
 from catalog.views import contacts
 
@@ -14,7 +16,7 @@ from article.views import (
 app_name = ArticleConfig.name
 
 urlpatterns = [
-    path("blog", ArticleListView.as_view(), name="blog"),
+    path("blog", cache_page(60)(ArticleListView.as_view()), name="blog"),
     path("article/<slug:slug>/", ArticleDetailView.as_view(), name="article_detail"),
     path("article_create/", ArticleCreateView.as_view(), name="article_create"),
     path(

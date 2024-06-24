@@ -3,8 +3,26 @@
 {% load my_tags %}
 {% block content %}
 
+<div class="row text-right">
+    <div class="col-12">
+
+        <div class="card mb-3 box-shadow">
+            <div style="color: orange">
+            {% for category in category_list %}
+            <b>{{category.name}} &nbsp; &nbsp;</b>
+            {%endfor%}
+            </div>
+
+        </div>
+
+
+</div>
+
 
 <div class="row text-right">
+
+
+
     {% for object in object_list %}
 
     <div class="col-4">

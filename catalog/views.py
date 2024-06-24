@@ -1,7 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.cache import cache
 from django.core.exceptions import PermissionDenied
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from datetime import datetime
 
 from django.urls import reverse_lazy
@@ -17,16 +18,56 @@ from django.views.generic import (
     DeleteView,
 )
 
+from catalog.services import get_cached_versions_for_products, get_cached_category, get_cached_products
+from config import settings
+
 
 class GetContextMixin:
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
-        context_data["version"] = Version.objects.all()
+        # if settings.CACHE_ENABLED:
+        #     key = f'version_list'
+        #     version_list = cache.get(key)
+        #     if version_list is None:
+        #         version_list  = Version.objects.all()
+        #         cache.set(key, version_list)
+        # else:
+        #     version_list = Version.objects.all()
+
+        context_data["version"] = get_cached_versions_for_products()
+        context_data['category_list'] = get_cached_category()
+        # пагинация с этим не работает, а так кешируется конечно
+        # context_data["object_list"] = get_cached_products()
         return context_data
 
 
-class ProductListView(GetContextMixin, ListView):
+class ProductListView(ListView):
     model = Product
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+
+        context_data["version"] = get_cached_versions_for_products()
+        # пагинация с этим не работает, а так кешируется конечно
+        context_data["object_list"] = get_cached_products()
+        context_data['category_list'] = get_cached_category()
+        return context_data
+
+class ProductListViewCategory(GetContextMixin, ListView):
+    model = Product
+
+    def get_queryset(self):
+        self.category = get_object_or_404(Category, name=self.kwargs['name'])
+        return Product.objects.filter(category_id=self.category)
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+
+        context_data["version"] = get_cached_versions_for_products()
+        # пагинация с этим не работает, а так кешируется конечно
+        # context_data["object_list"] = get_cached_products()
+        context_data['category_list'] = [self.category,]
+        return context_data
+
 
 
 class Product2ListView(GetContextMixin, ListView):
@@ -41,8 +82,14 @@ class Product3ListView(GetContextMixin, ListView):
     # queryset = model.objects.all()  # Default: Model.objects.all()
 
 
-class ProductDetailView(DetailView):
+class ProductDetailView(GetContextMixin, DetailView):
     model = Product
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # context['mailing_list'] = Mailing.objects.all()
+        context['category_list'] = get_cached_category()
+        return context
 
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
@@ -143,6 +190,16 @@ def contacts(request):
 
 class VersionListView(ListView):
     model = Version
+
+class CategoryListView(ListView):
+    model = Category
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # context['mailing_list'] = Mailing.objects.all()
+        context['category_list'] = get_cached_category()
+        return context
+
 
 
 class VersionDetailView(DetailView):
