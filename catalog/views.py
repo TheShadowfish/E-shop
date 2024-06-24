@@ -18,7 +18,7 @@ from django.views.generic import (
     DeleteView,
 )
 
-from catalog.services import get_cached_versions_for_products, get_cached_category
+from catalog.services import get_cached_versions_for_products, get_cached_category, get_cached_products
 from config import settings
 
 
@@ -35,11 +35,20 @@ class GetContextMixin:
         #     version_list = Version.objects.all()
 
         context_data["version"] = get_cached_versions_for_products()
+        # пагинация с этим не работает, а так кешируется конечно
+        # context_data["object_list"] = get_cached_products()
         return context_data
 
 
-class ProductListView(GetContextMixin, ListView):
+class ProductListView(ListView):
     model = Product
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+
+        context_data["version"] = get_cached_versions_for_products()
+        # пагинация с этим не работает, а так кешируется конечно
+        context_data["object_list"] = get_cached_products()
+        return context_data
 
 
 class Product2ListView(GetContextMixin, ListView):
