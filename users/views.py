@@ -8,14 +8,14 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, UpdateView
 
-from users.forms import UserRegisterFoerm, UserProfileForm
+from users.forms import UserRegisterForm, UserProfileForm
 from users.models import User
 from users.services import send_email_confirmation, send_email_password, generate_password
 
 
 class RegisterView(CreateView):
     model = User
-    form_class = UserRegisterFoerm
+    form_class = UserRegisterForm
     template_name = "users/register.html"
     success_url = reverse_lazy("users:login")
 
