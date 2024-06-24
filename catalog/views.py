@@ -18,7 +18,7 @@ from django.views.generic import (
     DeleteView,
 )
 
-from catalog.services import get_cashed_versions_for_products
+from catalog.services import get_cached_versions_for_products, get_cached_category
 from config import settings
 
 
@@ -34,7 +34,7 @@ class GetContextMixin:
         # else:
         #     version_list = Version.objects.all()
 
-        context_data["version"] = get_cashed_versions_for_products()
+        context_data["version"] = get_cached_versions_for_products()
         return context_data
 
 
@@ -56,6 +56,12 @@ class Product3ListView(GetContextMixin, ListView):
 
 class ProductDetailView(GetContextMixin, DetailView):
     model = Product
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # context['mailing_list'] = Mailing.objects.all()
+        context['category_list'] = get_cached_category()
+        return context
 
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
@@ -156,6 +162,16 @@ def contacts(request):
 
 class VersionListView(ListView):
     model = Version
+
+class CategoryListView(ListView):
+    model = Category
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # context['mailing_list'] = Mailing.objects.all()
+        context['category_list'] = get_cached_category()
+        return context
+
 
 
 class VersionDetailView(DetailView):

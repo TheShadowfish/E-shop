@@ -78,7 +78,21 @@
                 <br> <br>
                 <b>Описание: </b>{{object.description}}
                 <br> <br>
+
+                {% comment "доступ теперь через кеш категорий (см ниже) %}
                 <b>Категория: </b>{{object.category}}
+                <br> <br>
+                {%endcomment%}
+
+                <b>Категория: </b>
+                {%for category in category_list%}
+                {% if object.category_id == category.id %}
+                {{category.name}}
+                <br>
+                <b> Описание категории: </b> {{category.description}}
+
+                {%endif%}
+                {%endfor%}
                 <br> <br>
                 <b>Цена: </b>{{object.price}}
                 <br><br>
