@@ -5,12 +5,10 @@
 
 
 <div class="row text-right">
-    {% for object in object_list %}
 
-    <div class="col-4">
+    <div class="col-12">
 
         <div class="card mb-3 box-shadow">
-            <img src="{{ object.image | media_filter }}" class="card-img-top" alt={{object.image|media_filter}}>
 
 
             <div class="card-body">
@@ -33,27 +31,13 @@
                     {% load my_tags %}
 
 
-                    {%for category in category_list%}
+                    {% for category in category_list %}
 
                     <tr>
                         <td>{{category.name}}</td>
                         <td>{{category.description}}</td>
-                        <td><a class="btn btn-primary" href=""
-                               role="button">Посмотреть</a></td>
-
-                        {% if user == object.product.owner %}
-
-                        <td><a class="btn btn-primary" href="{% url 'catalog:version_update' object.pk%}" role="button">Изменить</a>
-                        </td>
-                        <td><a class="btn btn-primary" href="{% url 'catalog:version_delete' object.pk%}" role="button">Удалить</a>
-                        </td>
-
-                        {% else %}
-                        <td><a class="btn btn-secondary" disabled>Изменить</a>
-                        </td>
-                        <td><a class="btn btn-secondary" disabled>Удалить</a>
-                        </td>
-                        {%endif%}
+                        <td><a class="btn btn-primary" href="#"
+                               role="button">Посмотреть продукты</a></td>
 
                     </tr>
                     {% endfor %}
@@ -61,35 +45,11 @@
                     </tbody>
                 </table>
 
-
-                <br>
-
-
-
-
-                <div class="btn-group">
-                    <a class="btn btn-primary" href="{% url 'catalog:product_detail' object.pk%}" role="button">Посмотреть</a>
-
-
-
-                    {% if perms.catalog.can_change_is_published_field and perms.catalog.can_edit_description and perms.catalog.can_edit_category or user == object.owner %}
-                    <a class="btn btn-primary" href="{% url 'catalog:product_update' object.pk%}"
-                       role="button">Изменить</a>
-                    {%endif%}
-
-                    {% if user == object.owner or user.is_superuser%}
-
-                    <a class="btn btn-primary" href="{% url 'catalog:product_delete' object.pk%}"
-                       role="button">Удалить</a>
-                    {%endif%}
-                </div>
-
             </div>
         </div>
 
 
     </div>
-    {% endfor %}
 
 
 </div>
