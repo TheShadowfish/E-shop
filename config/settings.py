@@ -88,14 +88,13 @@ WSGI_APPLICATION = "config.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "hw_20",
+        "NAME": config("DB_POSTRESQL_NAME"),
         "USER": config("DB_POSTRESQL_USER"),
-        "HOST": "127.0.0.1",
-        "PORT": 5432,
+        "HOST": config("DB_POSTRESQL_HOST"),
+        "PORT": config("DB_POSTRESQL_PORT"),
         "PASSWORD": config("DB_POSTRESQL_PASSWORD"),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -150,15 +149,18 @@ LOGOUT_REDIRECT_URL = "/"
 
 REDIRECT_FIELD_NAME = "users/login.html"
 
-EMAIL_HOST = "smtp.yandex.ru"
-EMAIL_PORT = 465
-EMAIL_HOST_USER = config("EMAIL_USER") + "@yandex.ru"
+EMAIL_HOST =  config("EMAIL_HOST")
+EMAIL_PORT = config("EMAIL_PORT")
+EMAIL_HOST_USER = config("EMAIL_USER")
 EMAIL_HOST_PASSWORD = config("EMAIL_PASSWORD")
-EMAIL_USE_TLS = False
-EMAIL_USE_SSL = True
+EMAIL_USE_TLS = config("EMAIL_USE_TLS") == 'True'
+EMAIL_USE_SSL = config("EMAIL_USE_SSL") == 'True'
 
-SERVER_EMAIL = EMAIL_HOST_USER
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+# SERVER_EMAIL=EMAIL_HOST_USER
+# DEFAULT_FROM_EMAIL=EMAIL_HOST_USER
+
+SERVER_EMAIL = config("SERVER_EMAIL")
+DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL")
 
 CACHE_ENABLED = config('CACHE_ENABLED') == 'True'
 
